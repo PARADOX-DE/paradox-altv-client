@@ -19,7 +19,7 @@ alt.on("keydown", key => {
     for(const handler of list) {
         if(handler.code != key) continue;
 
-        if(!handler.func) alt.emitServer("Pressed_E");
+        if(!handler.func) alt.emitServer(`Pressed_${handler.key}`);
         else if(handler.func()) break;
     }
 });
