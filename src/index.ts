@@ -1,4 +1,2 @@
-import alt from 'alt-client';
-import game from 'natives';
-
-alt.log("hello");
+import KeyHandler from './handlers/KeyHandler';
+new KeyHandler("E", 69);
