@@ -1,0 +1,22 @@
+{
+    "compileOnSave": true,
+    "compilerOptions": {
+        "target": "ESNext",
+        "module": "ESNext",
+        "esModuleInterop": true,
+        "outDir": "./dist",
+  
+        "strict": true
+    },
+    "files": [
+        "node_modules/@altv/types-natives/index.d.ts",
+        "node_modules/@altv/types-client/index.d.ts"
+    ],
+    "include": [
+        "src/**/*"
+    ],
+    "exclude": [
+        "node_modules",
+        "**/*.spec.ts"
+    ]
+}

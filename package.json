@@ -1,0 +1,25 @@
+{
+  "name": "PARADOX Client",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "webpack"
+  },
+  "author": "PARADOX ROLEPLAY",
+  "license": "ISC",
+  "dependencies": {
+    "@altv/types-client": "^1.5.2",
+    "@altv/types-natives": "^1.1.0",
+    "git": "file:github.com:micaww\\altv-webpack-plugin.git#webpack-v5",
+    "webpack-obfuscator": "^2.6.0"
+  },
+  "devDependencies": {
+    "altv-webpack-plugin": "^1.0.3",
+    "javascript-obfuscator": "^2.10.3",
+    "ts-loader": "^8.0.17",
+    "typescript": "^4.1.5",
+    "webpack": "^4.46.0",
+    "webpack-cli": "^4.5.0"
+  }
+}
