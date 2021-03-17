@@ -19,7 +19,7 @@ module.exports = {
 	},
 	output: {
 		filename: "index.js",
-        path: path.resolve(__dirname, "dist")
+        path: path.resolve(__dirname, "../Server/resources/PARADOX_RP/client/")
 	},
     plugins: [
         new altv(),

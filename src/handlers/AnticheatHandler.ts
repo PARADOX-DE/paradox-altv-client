@@ -8,11 +8,12 @@ import AnticheatFlag from '../enums/AnticheatFlag';
 class AnticheatHandler {
     ticks: number;
     localPlayer: alt.Player;
-    config?: AnticheatConfig;
+    config: AnticheatConfig;
 
     constructor() {
         this.localPlayer = alt.Player.local;
         this.ticks = 0;
+        this.config = { maxVehicleSpeed: 1000, teleportDistance: 1000 };
 
         alt.onServer("Anticheat::LoadConfig", (config: AnticheatConfig) => this.config = config);
 
@@ -27,27 +28,23 @@ class AnticheatHandler {
     }
 
     tick() {
-        if(!this.config) return;
-        
         if(game.getPlayerInvincible(this.localPlayer.scriptID)) return this.flag(AnticheatFlag.Godmode);
-        if(game.getEntityHealth(this.localPlayer.scriptID) > 200) return this.flag(AnticheatFlag.Autoheal);
-        if(game.getPedArmour(this.localPlayer.scriptID) > 100) return this.flag(AnticheatFlag.Autoheal);
+        if(game.getEntityHealth(this.localPlayer.scriptID) > 200) return this.flag(AnticheatFlag.Autoheal, game.getEntityHealth(this.localPlayer.scriptID));
+        if(game.getPedArmour(this.localPlayer.scriptID) > 100) return this.flag(AnticheatFlag.Autoheal, game.getPedArmour(this.localPlayer.scriptID));
 
-
+        if(this.localPlayer.vehicle && this.localPlayer.vehicle.speed > this.config.maxVehicleSpeed)
+            return this.flag(AnticheatFlag.VehicleSpeed, this.localPlayer.vehicle.speed);
     }
 
     //#region Checks
     checkAutoheal() {
-        if(!this.config) return;
-
         const health = this.localPlayer.health;
         game.applyDamageToPed(this.localPlayer.scriptID, 1, false, undefined);
 
         alt.setTimeout(() => {
-            alt.log(this.localPlayer.health);
-            alt.log(health - 1);
-            alt.log(health);
-        }, 250);
+            if(this.localPlayer.health != (health - 1)) return this.flag(AnticheatFlag.Autoheal);
+            game.setEntityHealth(this.localPlayer.scriptID, health, 0);
+        }, 100);
     }
     //#endregion
 

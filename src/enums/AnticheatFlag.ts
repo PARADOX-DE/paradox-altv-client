@@ -1,6 +1,7 @@
 enum AnticheatFlag {
     Godmode = 0,
-    Autoheal
+    Autoheal,
+    VehicleSpeed
 }
 
 export default AnticheatFlag;
