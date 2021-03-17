@@ -3,6 +3,7 @@ import game from 'natives';
 
 import EventHandler from './EventHandler';
 import AnticheatConfig from '../interfaces/AnticheatConfig';
+import AnticheatFlag from '../enums/AnticheatFlag';
 
 class AnticheatHandler {
     ticks: number;
@@ -26,11 +27,11 @@ class AnticheatHandler {
     }
 
     tick() {
-        if(game.getPlayerInvincible(this.localPlayer.scriptID)) return this.flag("Godmode");
-        if(game.getEntityHealth(this.localPlayer.scriptID) > 200) return this.flag("Godmode/Autoheal");
-        if(game.getPedArmour(this.localPlayer.scriptID) > 100) return this.flag("Godmode/Autoheal");
+        if(game.getPlayerInvincible(this.localPlayer.scriptID)) return this.flag(AnticheatFlag.Godmode);
+        if(game.getEntityHealth(this.localPlayer.scriptID) > 200) return this.flag(AnticheatFlag.Autoheal);
+        if(game.getPedArmour(this.localPlayer.scriptID) > 100) return this.flag(AnticheatFlag.Autoheal);
 
-
+        
     }
 
     //#region Checks
@@ -50,7 +51,8 @@ class AnticheatHandler {
 
     //#endregion
 
-    flag(reason: string, ...args: any[]) {
+    flag(reason: AnticheatFlag, ...args: any[]) {
+        alt.log(reason);
         EventHandler.emitServer("Anticheat::Flag", reason, ...args);
     }
 }
