@@ -6,9 +6,10 @@ import AnticheatConfig from '../interfaces/AnticheatConfig';
 import AnticheatFlag from '../enums/AnticheatFlag';
 
 class AnticheatHandler {
-    ticks: number;
-    localPlayer: alt.Player;
-    config: AnticheatConfig;
+    private localPlayer: alt.Player;
+    private config: AnticheatConfig;
+
+    private ticks: number;
 
     constructor() {
         this.localPlayer = alt.Player.local;
@@ -24,7 +25,7 @@ class AnticheatHandler {
 
         alt.setInterval(() => {
             this.checkAutoheal();
-        }, 10 * 1000);
+        }, 5 * 1000);
     }
 
     tick() {
@@ -42,7 +43,9 @@ class AnticheatHandler {
         game.applyDamageToPed(this.localPlayer.scriptID, 1, false, undefined);
 
         alt.setTimeout(() => {
-            if(this.localPlayer.health != (health - 1)) return this.flag(AnticheatFlag.Autoheal);
+            const realHealth = health - 1;
+
+            if(this.localPlayer.health > realHealth) return this.flag(AnticheatFlag.Autoheal);
             game.setEntityHealth(this.localPlayer.scriptID, health, 0);
         }, 100);
     }
