@@ -2,14 +2,18 @@ import alt from 'alt-client';
 import game from 'natives';
 
 import EventHandler from './EventHandler';
+import AnticheatConfig from '../interfaces/AnticheatConfig';
 
 class AnticheatHandler {
     ticks: number;
     localPlayer: alt.Player;
+    config?: AnticheatConfig;
 
     constructor() {
         this.localPlayer = alt.Player.local;
         this.ticks = 0;
+
+        alt.onServer("Anticheat::LoadConfig", (config: AnticheatConfig) => this.config = config);
 
         alt.everyTick(() => {
             if(this.ticks % 100 == 0) this.tick();
@@ -40,6 +44,10 @@ class AnticheatHandler {
             alt.log(health);
         }, 1000);
     }
+    //#endregion
+
+    //#region Server events
+
     //#endregion
 
     flag(reason: string, ...args: any[]) {
