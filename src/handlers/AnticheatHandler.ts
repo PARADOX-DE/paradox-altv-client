@@ -27,15 +27,19 @@ class AnticheatHandler {
     }
 
     tick() {
+        if(!this.config) return;
+        
         if(game.getPlayerInvincible(this.localPlayer.scriptID)) return this.flag(AnticheatFlag.Godmode);
         if(game.getEntityHealth(this.localPlayer.scriptID) > 200) return this.flag(AnticheatFlag.Autoheal);
         if(game.getPedArmour(this.localPlayer.scriptID) > 100) return this.flag(AnticheatFlag.Autoheal);
 
-        
+
     }
 
     //#region Checks
     checkAutoheal() {
+        if(!this.config) return;
+
         const health = this.localPlayer.health;
         game.applyDamageToPed(this.localPlayer.scriptID, 1, false, undefined);
 
@@ -43,7 +47,7 @@ class AnticheatHandler {
             alt.log(this.localPlayer.health);
             alt.log(health - 1);
             alt.log(health);
-        }, 1000);
+        }, 250);
     }
     //#endregion
 
