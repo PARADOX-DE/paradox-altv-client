@@ -13,15 +13,21 @@ class KeyHandler {
 
         list.push(this);
     }
+
+    static get all() {
+        return list;
+    }
 }
 
 alt.on("keydown", key => {
-    for(const handler of list) {
+    for(const handler of KeyHandler.all) {
         if(handler.code != key) continue;
 
         if(!handler.func) alt.emitServer(`Pressed_${handler.key}`);
         else if(handler.func()) break;
     }
 });
+
+new KeyHandler("E", 69);
 
 export default KeyHandler;

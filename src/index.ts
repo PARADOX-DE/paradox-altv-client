@@ -1,7 +1,4 @@
-import KeyHandler from './handlers/KeyHandler';
-import EventHandler from './handlers/EventHandler';
-
+import './handlers/KeyHandler';
 import "./handlers/AnticheatHandler";
 
-EventHandler.emitServer("test");
-new KeyHandler("E", 69);
+import "./systems/login";
