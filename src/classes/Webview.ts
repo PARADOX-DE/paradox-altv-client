@@ -13,6 +13,14 @@ class Webview {
     onLoad() {
         alt.log("WebView -> Loaded");
     }
+
+    showWindow(name: string, ...args: any[]) {
+        this.webView.emit("showWindow", name, ...args);
+    }
+
+    closeWindow(name: string) {
+        this.webView.emit("closeWindow", name);
+    }
 }
 
 export default new Webview();
