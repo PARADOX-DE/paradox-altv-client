@@ -12,17 +12,6 @@ class Webview {
 
         EventHandler.onServer("Webview::ShowWindow", this.showWindow.bind(this));
         EventHandler.onServer("Webview::CloseWindow", this.closeWindow.bind(this));
-
-        EventHandler.onServer("Webview::ShowCursor", this.showCursor.bind(this));
-        EventHandler.onServer("Webview::ToggleControls", this.ToggleControls.bind(this));
-    }
-
-    showCursor(state: boolean) {
-        alt.showCursor(state);
-    }
-
-    ToggleControls(state: boolean) {
-        alt.toggleGameControls(state);
     }
 
     onLoad() {
@@ -31,10 +20,16 @@ class Webview {
 
     showWindow(name: string, ...args: any[]) {
         this.webView.emit("showWindow", name, ...args);
+
+        alt.showCursor(true);
+        alt.toggleGameControls(false);
     }
 
     closeWindow(name: string) {
         this.webView.emit("closeWindow", name);
+
+        alt.showCursor(false);
+        alt.toggleGameControls(true);
     }
 }
 
