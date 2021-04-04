@@ -11,7 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "@altv/types-client": "^1.5.2",
-    "@altv/types-natives": "^1.1.0",
+    "@altv/types-natives": "^1.2.2",
     "git": "file:github.com:micaww\\altv-webpack-plugin.git#webpack-v5",
     "webpack-obfuscator": "^2.6.0"
   },
