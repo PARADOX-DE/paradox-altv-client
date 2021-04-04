@@ -1,4 +1,5 @@
 import alt from 'alt-client';
+import EventHandler from '../handlers/EventHandler';
 
 const devMode = true;
 
@@ -8,6 +9,9 @@ class Webview {
     constructor() {
         this.webView = new alt.WebView(devMode ? "http://localhost:8080/" : "http://assets/paradox-web/index.html");
         this.webView.on("load", () => this.onLoad());
+
+        EventHandler.onServer("Webview::ShowWindow", this.showWindow.bind(this));
+        EventHandler.onServer("Webview::CloseWindow", this.closeWindow.bind(this));
     }
 
     onLoad() {
