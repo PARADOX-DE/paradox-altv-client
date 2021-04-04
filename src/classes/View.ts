@@ -28,7 +28,7 @@ class View {
         return Views;
     }
 
-    public static getByName(name: string): View | undefined {
+    public static getByName(name: string) {
         return this.all.find(x => x.name == name);
     }
 }

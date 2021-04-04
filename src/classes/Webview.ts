@@ -12,6 +12,17 @@ class Webview {
 
         EventHandler.onServer("Webview::ShowWindow", this.showWindow.bind(this));
         EventHandler.onServer("Webview::CloseWindow", this.closeWindow.bind(this));
+
+        EventHandler.onServer("Webview::ShowCursor", this.showCursor.bind(this));
+        EventHandler.onServer("Webview::ToggleControls", this.ToggleControls.bind(this));
+    }
+
+    showCursor(state: boolean) {
+        alt.showCursor(state);
+    }
+
+    ToggleControls(state: boolean) {
+        alt.toggleGameControls(state);
     }
 
     onLoad() {
