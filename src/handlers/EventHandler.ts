@@ -5,7 +5,7 @@ class EventHandler {
 
     emitServer(eventName: string, ...args: any[]) {
         if(alt.isInDebug()) alt.log(`[EVENT] emitServer: ${eventName} - ${args.join(", ")}`);
-        alt.emitServer("PARADOX::EVENT", eventName, ...args);
+        alt.emitServer(eventName, ...args);
     }
 
     onServer(eventName: string, listener: (...args: any[]) => void) {

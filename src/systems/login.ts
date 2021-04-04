@@ -13,7 +13,7 @@ class LoginView extends View {
     }
 
     sendLogin(username: string, password: string) {
-        EventHandler.emitServer("Login::Auth", username, password);
+        EventHandler.emitServer("RequestLoginResponse", username, password);
     }
 }
 
