@@ -4,11 +4,9 @@ import game from 'natives';
 import EventHandler from './EventHandler';
 
 import AnticheatConfig from '../interfaces/AnticheatConfig';
-import IOnTick from '../interfaces/IOnTick';
-
 import AnticheatFlag from '../enums/AnticheatFlag';
 
-class AnticheatHandler implements IOnTick {
+class AnticheatHandler {
     private localPlayer: alt.Player;
     private config: AnticheatConfig;
     private ticks: number;
