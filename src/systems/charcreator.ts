@@ -33,13 +33,17 @@ class CharCreator extends View {
 
         for(let i = 0; i < data.facedata; i++) game.setPedFaceFeature(this.localPlayer.scriptID, i, data.facedata[i]);
 
-        const collection = alt.hash(data.hairOverlay.collection);
-        const overlay = alt.hash(data.hairOverlay.overlay);
-        game.addPedDecorationFromHashes(this.localPlayer.scriptID, collection, overlay);
-        game.setPedComponentVariation(this.localPlayer.scriptID, 2, data.hairstyle, 0, 0);
-        game.setPedHairColor(this.localPlayer.scriptID, data.hair_color, 0);
+        if(data.hairOverlay) {
+            const collection = alt.hash(data.hairOverlay.collection);
+            const overlay = alt.hash(data.hairOverlay.overlay);
+        
+            game.addPedDecorationFromHashes(this.localPlayer.scriptID, collection, overlay);
+            game.setPedComponentVariation(this.localPlayer.scriptID, 2, data.hairstyle, 0, 0);
+            game.setPedHairColor(this.localPlayer.scriptID, data.hair_color, 0);
+        }
 
         game.setPedHeadOverlay(this.localPlayer.scriptID, 2, data.eyebrowShape, 1);
+        game.setPedHeadOverlayColor(this.localPlayer.scriptID, 2, 1, 0, 0);
 
         game.setPedEyeColor(this.localPlayer.scriptID, data.eye_color);
 
