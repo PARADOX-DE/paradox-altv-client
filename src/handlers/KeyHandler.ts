@@ -29,5 +29,11 @@ alt.on("keydown", key => {
 });
 
 new KeyHandler("E", 69);
+new KeyHandler("F5", 116, () => {
+    alt.showCursor(true);
+    alt.toggleGameControls(false);
+
+    return true;
+});
 
 export default KeyHandler;

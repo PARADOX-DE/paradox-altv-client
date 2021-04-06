@@ -6,3 +6,4 @@ import "./handlers/EventHandler";
 import "./systems/login";
 import "./systems/progressbar";
 import "./systems/welcomeCutscene";
+import "./systems/charcreator";

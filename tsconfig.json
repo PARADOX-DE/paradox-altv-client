@@ -4,7 +4,7 @@
         "target": "ESNext",
         "module": "ESNext",
         "esModuleInterop": true,
-        "outDir": "C:/Users/PARADOX/Downloads/altv-server/resources/PARADOX_RP/client/",
+        "outDir": "../Server/resources/PARADOX_RP/client/",
   
         "strict": true
     },
