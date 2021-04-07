@@ -1,65 +1,90 @@
 import alt from 'alt-client';
 import game from 'natives';
 
+import EventHandler from '../handlers/EventHandler';
 import View from '../classes/View';
-import HairOverlays from '../data/hairoverlays';
 
 class CharCreator extends View {
     private localPlayer: alt.Player;
+    private tempData: any;
 
     constructor() {
         super("Charcreator");
 
         this.localPlayer = alt.Player.local;
+        
         this.on("Update", this.onUpdate.bind(this));
+        this.on("Finish", this.onFinish.bind(this));
+    }
+
+    onFinish() {
+        EventHandler.emitServer("SavePlayerCharacter", this.tempData.firstName, this.tempData.lastname, this.tempData.birthday, JSON.stringify({
+            choiseMale: this.tempData.choiseMale,
+            choiseFemale: this.tempData.choiseFemale,
+           
+            resemblance: this.tempData.resemblance,
+            skintone: this.tempData.skintone,
+
+            facedata: this.tempData.facedata,
+
+            opacityOverlays: this.tempData.opacityOverlays,
+            hairOverlay: this.tempData.hairOverlay,
+
+            hairstyle: this.tempData.hairstyle,
+            hair_color: this.tempData.hair_color,
+
+            eyebrowShape: this.tempData.eyebrowShape,
+            eyebrowThickness: this.tempData.eyebrowThickness,
+
+            eye_color: this.tempData.eye_color,
+            gender: this.tempData.gender
+        }));
     }
 
     onUpdate(data: any) {
+        this.tempData = data;
+
         game.setPedHeadBlendData(this.localPlayer.scriptID, 0, 0, 0, 0, 0, 0, 0, 0, 0, false);
         game.setPedHeadBlendData(
             this.localPlayer.scriptID,
 
-            data.choiseMale,
-            data.choiseFemale,
+            this.tempData.choiseMale,
+            this.tempData.choiseFemale,
             0,
-            data.choiseMale,
-            data.choiseFemale,
+            this.tempData.choiseMale,
+            this.tempData.choiseFemale,
             0,
-            parseFloat(data.resemblance),
-            parseFloat(data.skintone),
+            parseFloat(this.tempData.resemblance),
+            parseFloat(this.tempData.skintone),
             0,
             false
         );
 
-        for(let i = 0; i < data.facedata; i++) game.setPedFaceFeature(this.localPlayer.scriptID, i, data.facedata[i]);
+        for(let i = 0; i < this.tempData.facedata.length; i++)
+            game.setPedFaceFeature(this.localPlayer.scriptID, i, this.tempData.facedata[i]);
+            
+        for(let i = 0; i < this.tempData.opacityOverlays.length; i++)
+            game.setPedHeadOverlay(this.localPlayer.scriptID, this.tempData.opacityOverlays[i].id, this.tempData.opacityOverlays[i].value, parseFloat(this.tempData.opacityOverlays[i].opacity));
 
-        if(data.hairOverlay) {
-            const collection = alt.hash(data.hairOverlay.collection);
-            const overlay = alt.hash(data.hairOverlay.overlay);
+        if(this.tempData.hairOverlay) {
+            const collection = alt.hash(this.tempData.hairOverlay.collection);
+            const overlay = alt.hash(this.tempData.hairOverlay.overlay);
         
             game.addPedDecorationFromHashes(this.localPlayer.scriptID, collection, overlay);
-            game.setPedComponentVariation(this.localPlayer.scriptID, 2, data.hairstyle, 0, 0);
-            game.setPedHairColor(this.localPlayer.scriptID, data.hair_color, 0);
+            game.setPedComponentVariation(this.localPlayer.scriptID, 2, this.tempData.hairstyle, 0, 0);
+            game.setPedHairColor(this.localPlayer.scriptID, this.tempData.hair_color, 0);
         }
 
-        game.setPedHeadOverlay(this.localPlayer.scriptID, 2, data.eyebrowShape, 1);
+        game.setPedHeadOverlay(this.localPlayer.scriptID, 2, this.tempData.eyebrowShape, this.tempData.eyebrowThickness);
         game.setPedHeadOverlayColor(this.localPlayer.scriptID, 2, 1, 0, 0);
+        
+        game.setPedEyeColor(this.localPlayer.scriptID, this.tempData.eye_color);
 
-        game.setPedEyeColor(this.localPlayer.scriptID, data.eye_color);
-
-        if(data.gender == 0) {
-            game.setPedComponentVariation(this.localPlayer.scriptID, 3, 15, 0, 0);
-            game.setPedComponentVariation(this.localPlayer.scriptID, 4, 14, 0, 0);
-            game.setPedComponentVariation(this.localPlayer.scriptID, 6, 35, 0, 0);
-            game.setPedComponentVariation(this.localPlayer.scriptID, 8, 15, 0, 0);
-            game.setPedComponentVariation(this.localPlayer.scriptID, 11, 15, 0, 0);
-        } else {
-            game.setPedComponentVariation(this.localPlayer.scriptID, 3, 15, 0, 0);
-            game.setPedComponentVariation(this.localPlayer.scriptID, 4, 14, 0, 0);
-            game.setPedComponentVariation(this.localPlayer.scriptID, 6, 34, 0, 0);
-            game.setPedComponentVariation(this.localPlayer.scriptID, 8, 15, 0, 0);
-            game.setPedComponentVariation(this.localPlayer.scriptID, 11, 91, 0, 0);
-        }
+        game.setPedComponentVariation(this.localPlayer.scriptID, 3, 15, 0, 0);
+        game.setPedComponentVariation(this.localPlayer.scriptID, 4, 14, 0, 0);
+        game.setPedComponentVariation(this.localPlayer.scriptID, 6, this.tempData.gender ? 35 : 34, 0, 0);
+        game.setPedComponentVariation(this.localPlayer.scriptID, 8, 15, 0, 0);
+        game.setPedComponentVariation(this.localPlayer.scriptID, 11, this.tempData.gender ? 15 : 91, 0, 0);
     }
 }
 
