@@ -24,6 +24,10 @@ class View {
         Webview.webView.emit(`${this.name}::${eventName}`, ...args);
     }
 
+    public get webview() {
+        return Webview.webView;
+    }
+
     public static get all() {
         return Views;
     }

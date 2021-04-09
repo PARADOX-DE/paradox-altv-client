@@ -15,6 +15,7 @@ class Webview {
     }
 
     onLoad() {
+        this.webView.unfocus();
         alt.log("WebView -> Loaded");
     }
 
