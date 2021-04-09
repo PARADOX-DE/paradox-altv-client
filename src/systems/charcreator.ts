@@ -12,7 +12,7 @@ class CharCreator extends View {
         super("Charcreator");
 
         this.localPlayer = alt.Player.local;
-        
+
         this.on("Update", this.onUpdate.bind(this));
         this.on("Finish", this.onFinish.bind(this));
     }
@@ -44,6 +44,7 @@ class CharCreator extends View {
     onUpdate(data: any) {
         this.tempData = data;
 
+        game.clearPedDecorations(this.localPlayer.scriptID);
         game.setPedHeadBlendData(this.localPlayer.scriptID, 0, 0, 0, 0, 0, 0, 0, 0, 0, false);
         game.setPedHeadBlendData(
             this.localPlayer.scriptID,

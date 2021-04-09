@@ -7,3 +7,5 @@ import "./systems/login";
 import "./systems/progressbar";
 import "./systems/welcomeCutscene";
 import "./systems/charcreator";
+import "./systems/garage";
+import "./systems/hud";
