@@ -15,6 +15,12 @@ class WelcomeCutscene {
             return true;
         });
 
+        new KeyHandler("F4", 115, () => {
+            this.stop();
+
+            return true;
+        });
+
         alt.everyTick(this.onTick.bind(this));
     }
 
@@ -78,7 +84,7 @@ class WelcomeCutscene {
     }
 
     stop() {
-        if(!this.started) return;
+        //if(!this.started) return;
         this.started = false;
 
         game.triggerMusicEvent("FM_INTRO_DRIVE_END");

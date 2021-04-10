@@ -8,11 +8,16 @@ class BankView extends View {
     constructor() {
         super("Bank");
 
-        this.on("Show", this.onLoad.bind(this));
+        this.on("Deposit", this.onDeposit.bind(this));
+        this.on("Withdraw", this.onWithdraw.bind(this));
     }
 
-    onLoad() {
-        alt.log("Bank loaded");
+    onDeposit(value: number) {
+        EventHandler.emitServer("DepositMoney", value);
+    }
+
+    onWithdraw(value: number) {
+        EventHandler.emitServer("WithdrawMoney", value);
     }
 }
 

@@ -6,10 +6,14 @@ import KeyHandler from '../handlers/KeyHandler';
 import View from '../classes/View';
 import Marker from '../classes/Marker';
 
+import Streets from '../data/streets';
+
 class HudView extends View {
     savedCursorPosition?: alt.Vector2;
     targetMarker?: Marker;
     targetId?: number;
+
+    everyTick: number;
 
     constructor() {
         super("Hud");
@@ -22,10 +26,36 @@ class HudView extends View {
 
         new KeyHandler("X", 88, this.openXMenu.bind(this), true, true);
         new KeyHandler("X", 88, this.closeXMenu.bind(this), false, false);
+
+        this.everyTick = alt.everyTick(this.onEveryTick.bind(this));
+
+        alt.on("leftVehicle", this.onLeftVehicle.bind(this));
     }
 
     onLoad() {
         this.emit("gotFormat", game.getIsWidescreen());
+    }
+
+    onLeftVehicle() {
+        this.emit("Speedo::Update", false, 0);
+    }
+
+    onEveryTick() {
+        const localPlayer = alt.Player.local;
+
+        if(localPlayer.vehicle) {
+            const vehicle = localPlayer.vehicle;
+            const speed = vehicle.speed * 3.6;
+
+            this.emit("Speedo::Update", true, speed.toFixed(0));
+        }
+
+        const zoneName = game.getNameOfZone(localPlayer.pos.x, localPlayer.pos.y, localPlayer.pos.z);
+
+        const zone = Streets.find(x => x.name.toLowerCase().includes(zoneName.toLowerCase()));
+        const [_, hash1, hash2] = game.getStreetNameAtCoord(localPlayer.pos.x, localPlayer.pos.y, localPlayer.pos.z);
+
+        this.emit("Street::Update", zone != undefined ? zone.display : "Invalid", `${ hash2 == 0 ? game.getStreetNameFromHashKey(hash1) : game.getStreetNameFromHashKey(hash1) + ' - ' + game.getStreetNameFromHashKey(hash2) }`);
     }
 
     //#region chat
