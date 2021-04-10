@@ -6,6 +6,7 @@ import KeyHandler from '../handlers/KeyHandler';
 import View from '../classes/View';
 import Marker from '../classes/Marker';
 
+import Weapons from '../data/weapons';
 import Streets from '../data/streets';
 
 class HudView extends View {
@@ -56,6 +57,11 @@ class HudView extends View {
         const [_, hash1, hash2] = game.getStreetNameAtCoord(localPlayer.pos.x, localPlayer.pos.y, localPlayer.pos.z);
 
         this.emit("Street::Update", zone != undefined ? zone.display : "Invalid", `${ hash2 == 0 ? game.getStreetNameFromHashKey(hash1) : game.getStreetNameFromHashKey(hash1) + ' - ' + game.getStreetNameFromHashKey(hash2) }`);
+        this.emit("Count::Update", alt.Player.all.length);
+
+        const weaponName = Weapons.find(x => x.hash == localPlayer.currentWeapon);
+
+        this.emit("Weapon::Update", localPlayer.currentWeapon != alt.hash("weapon_unarmed"), weaponName != undefined ? weaponName.name : "Unknown", game.getAmmoInClip(localPlayer.scriptID, localPlayer.currentWeapon)[1], game.getMaxAmmo(localPlayer.scriptID, localPlayer.currentWeapon)[1]);
     }
 
     //#region chat
