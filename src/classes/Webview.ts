@@ -20,7 +20,7 @@ class Webview {
     }
 
     showWindow(name: string, ...args: any[]) {
-        this.webView.emit("showWindow", name, args);
+        this.webView.emit("showWindow", name, ...args);
 
         alt.showCursor(true);
         alt.toggleGameControls(false);
