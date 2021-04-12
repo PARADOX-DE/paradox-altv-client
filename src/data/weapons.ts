@@ -1,11 +1,11 @@
 import alt from 'alt-client';
 
 export default [
-    { name: "CombatPdw", hash: 0x0A3D4D34 },
-	{ name: "HeavySniperMk2", hash: 0x0A914799 },
-	{ name: "HeavySniper", hash: 0x0C472FE2 },
-	{ name: "SniperRifle", hash: 0x05FC3C11 },
-	{ name: "FireExtinguisher", hash: 0x060EC506 },
+    { name: "Combat PDW", hash: 0x0A3D4D34 },
+	{ name: "Heavy-Sniper Mk2", hash: 0x0A914799 },
+	{ name: "Heavy-Sniper", hash: 0x0C472FE2 },
+	{ name: "Sniper-Rifle", hash: 0x05FC3C11 },
+	{ name: "Feuerlöscher", hash: 0x060EC506 },
 	{ name: "CompactLauncher", hash: 0x0781FE4A },
 	{ name: "Snowball", hash: 0x0787F0BB },
 	{ name: "VintagePistol", hash: 0x083839C4 },
