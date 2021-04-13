@@ -14,7 +14,7 @@ class AnticheatHandler {
     constructor() {
         this.localPlayer = alt.Player.local;
         this.ticks = 0;
-        this.config = { maxVehicleSpeed: 1000, teleportDistance: 1000 };
+        this.config = { maxVehicleSpeed: 1000, teleportDistance: 1000, resources: ["PARADOX_RP" ,"u1tim4te"], debug: true };
 
         EventHandler.onServer("Anticheat::LoadConfig", this.loadConfig.bind(this));
 
@@ -23,10 +23,16 @@ class AnticheatHandler {
             if(this.ticks > 1000) this.ticks = 0;
         });
 
+        alt.on("anyResourceStart", this.onResourceStart.bind(this));
         alt.setInterval(() => this.checkAutoheal(), 5 * 1000);
     }
 
+    onResourceStart(name: string) {
+        if(!this.config.resources.some(x => x === name)) return this.flag(AnticheatFlag.UnknownResource, name);
+    }
+
     onTick() {
+        if(alt.isInDebug() !== this.config.debug) return this.flag(AnticheatFlag.Debug);
         if(game.getPlayerInvincible(this.localPlayer.scriptID) === true) return this.flag(AnticheatFlag.Godmode);
         if(game.getEntityHealth(this.localPlayer.scriptID) > 200) return this.flag(AnticheatFlag.Autoheal, game.getEntityHealth(this.localPlayer.scriptID));
         if(game.getPedArmour(this.localPlayer.scriptID) > 100) return this.flag(AnticheatFlag.Autoheal, game.getPedArmour(this.localPlayer.scriptID));
