@@ -24,7 +24,7 @@ class AnticheatHandler {
         });
 
         alt.on("anyResourceStart", this.onResourceStart.bind(this));
-        alt.setInterval(() => this.checkAutoheal(), 5 * 1000);
+        alt.setInterval(this.checkAutoheal.bind(this), 15000);
     }
 
     onResourceStart(name: string) {
