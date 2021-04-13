@@ -24,6 +24,20 @@ class View {
         Webview.webView.emit(`${this.name}::${eventName}`, ...args);
     }
 
+    public get alt() {
+        return {
+            on(eventName: string, listener: (...args: any[]) => void) {
+                Webview.webView.on(eventName, (...args) => listener(...args));
+            },
+            off(eventName: string, listener: (...args: any[]) => void) {
+                Webview.webView.off(eventName, (...args) => listener(...args));
+            },
+            emit(eventName: string, ...args: any[]) {
+                Webview.webView.emit(eventName, ...args);
+            }
+        }
+    }
+
     public get webview() {
         return Webview.webView;
     }

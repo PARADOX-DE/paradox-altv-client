@@ -11,6 +11,10 @@ import "./systems/garage";
 import "./systems/hud";
 import "./systems/bank";
 
+import "./systems/hud/chat";
+import "./systems/hud/xmenu";
+import "./systems/hud/info";
+
 import alt from 'alt-client';
 import game from 'natives';
 

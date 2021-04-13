@@ -20,13 +20,13 @@ class HudView extends View {
         super("Hud");
 
         this.on("Show", this.onLoad.bind(this));
-        this.on("Chat::Send", this.onMessage.bind(this));
-        this.on("XMenu::Interact", this.onInteract.bind(this));
+        //this.on("Chat::Send", this.onMessage.bind(this));
+        //this.on("XMenu::Interact", this.onInteract.bind(this));
 
-        new KeyHandler("T", 84, this.openChat.bind(this), true);
+        //new KeyHandler("T", 84, this.openChat.bind(this), true);
 
-        new KeyHandler("X", 88, this.openXMenu.bind(this), true, true);
-        new KeyHandler("X", 88, this.closeXMenu.bind(this), false, false);
+        //new KeyHandler("X", 88, this.openXMenu.bind(this), true, true);
+        //new KeyHandler("X", 88, this.closeXMenu.bind(this), false, false);
 
         this.everyTick = alt.everyTick(this.onEveryTick.bind(this));
 
