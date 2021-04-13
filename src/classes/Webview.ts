@@ -8,7 +8,7 @@ class Webview {
 
     constructor() {
         this.webView = new alt.WebView(devMode ? "http://localhost:8080/" : "http://assets/paradox-web/index.html");
-        this.webView.on("load", () => this.onLoad());
+        this.webView.on("load", this.onLoad.bind(this));
 
         EventHandler.onServer("Webview::ShowWindow", this.showWindow.bind(this));
         EventHandler.onServer("Webview::CloseWindow", this.closeWindow.bind(this));
