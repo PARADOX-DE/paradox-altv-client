@@ -1,4 +1,5 @@
 import alt from 'alt-client';
+import game from 'natives';
 import Webview from '../classes/Webview';
 const list: KeyHandler[] = [];
 
@@ -62,6 +63,76 @@ new KeyHandler("F6", 117, () => {
 
     alt.showCursor(false);
     alt.toggleGameControls(true);
+
+    return true;
+});
+
+function getNearestVehicle(pos: alt.IVector3): alt.Vehicle | null {
+    let target = null;
+    let newDistance = 1000;
+
+    for(const vehicle of alt.Vehicle.all) {
+        if(vehicle.scriptID == 0) continue;
+        if(vehicle.pos.distanceTo(pos) <= 3 && vehicle.pos.distanceTo(pos) <= newDistance) {
+            newDistance = vehicle.pos.distanceTo(pos);
+            target = vehicle;
+        }
+    }
+
+    return target;
+}
+
+function hasVehicleTurretSeat(vehicle: alt.Vehicle): boolean {
+    for(let i=0; i<game.getVehicleMaxNumberOfPassengers(vehicle.scriptID); i++) {
+        if(game.isTurretSeat(vehicle.scriptID, i)) return true;
+    }
+
+    return false;
+}
+
+enum VehicleSeat {
+    None = -3,
+    Any,
+    Driver,
+    Passenger,
+    LeftFront = -1,
+    RightFront,
+    LeftRear,
+    RightRear,
+    ExtraSeat1,
+    ExtraSeat2,
+    ExtraSeat3,
+    ExtraSeat4,
+    ExtraSeat5,
+    ExtraSeat6,
+    ExtraSeat7,
+    ExtraSeat8,
+    ExtraSeat9,
+    ExtraSeat10,
+    ExtraSeat11,
+    ExtraSeat12,
+}
+
+new KeyHandler("G", 71, () => {
+    const veh = getNearestVehicle(alt.Player.local.pos);
+    if(!veh || veh == null) {
+        alt.log("cant find vehicle");
+        return false;
+    }
+
+    const localPlayer = alt.Player.local;
+    const relPos = game.getOffsetFromEntityGivenWorldCoords(veh.scriptID, localPlayer.pos.x, localPlayer.pos.y, localPlayer.pos.z);
+    let seat = VehicleSeat.Any;
+
+    if(game.getVehicleMaxNumberOfPassengers(veh.scriptID) > 1) {
+        if(relPos.x < 0 && relPos.y > 0) seat = VehicleSeat.LeftRear;
+        else if(relPos.x >= 0 && relPos.y > 0) seat = VehicleSeat.RightFront;
+        else if(relPos.x < 0 && relPos.y <= 0) seat = VehicleSeat.LeftRear;
+        else if(relPos.x >= 0 && relPos.y <= 0) seat = VehicleSeat.RightRear;
+    } else seat = VehicleSeat.Passenger;
+
+    if(hasVehicleTurretSeat(veh) && !localPlayer.isInRagdoll && !localPlayer.isAiming) game.setPedIntoVehicle(localPlayer.scriptID, veh.scriptID, seat);
+    else game.taskEnterVehicle(localPlayer.scriptID, veh.scriptID, -1, seat, 2.0, 0, 0);
 
     return true;
 });
