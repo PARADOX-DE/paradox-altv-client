@@ -27,7 +27,7 @@ class AnticheatHandler {
     }
 
     onTick() {
-        if(game.getPlayerInvincible(this.localPlayer.scriptID)) return this.flag(AnticheatFlag.Godmode);
+        if(game.getPlayerInvincible(this.localPlayer.scriptID) === true) return this.flag(AnticheatFlag.Godmode);
         if(game.getEntityHealth(this.localPlayer.scriptID) > 200) return this.flag(AnticheatFlag.Autoheal, game.getEntityHealth(this.localPlayer.scriptID));
         if(game.getPedArmour(this.localPlayer.scriptID) > 100) return this.flag(AnticheatFlag.Autoheal, game.getPedArmour(this.localPlayer.scriptID));
 

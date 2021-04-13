@@ -1,10 +1,13 @@
 import alt from 'alt-client';
 import game from 'natives';
+import EventHandler from '../handlers/EventHandler';
 
 import KeyHandler from '../handlers/KeyHandler';
 
 class WelcomeCutscene {
     started: boolean;
+    ped?: number;
+    jet?: number;
 
     constructor() {
         this.started = false;
@@ -21,6 +24,7 @@ class WelcomeCutscene {
             return true;
         });
 
+        alt.on("disconnect", this.stop.bind(this));
         alt.everyTick(this.onTick.bind(this));
     }
 
@@ -42,7 +46,7 @@ class WelcomeCutscene {
         game.setEntityInvincible(alt.Player.local.scriptID, true);
 
         game.prepareMusicEvent("FM_INTRO_START");
-        const ped = game.clonePed(alt.Player.local.scriptID, 0, false, false);
+        this.ped = game.clonePed(alt.Player.local.scriptID, 0, false, false);
 
         game.setEntityAlpha(alt.Player.local.scriptID, 0, true);
         game.renderScriptCams(false, false, 0, false, false, undefined);
@@ -51,22 +55,22 @@ class WelcomeCutscene {
         await this.waitForCutscene();
 
         const hash = alt.hash("p_cs_mp_jet_01_s");
-        const jet = game.createObject(hash, -1200, -1490, 142.385, false, true, false);
+        this.jet = game.createObject(hash, -1200, -1490, 142.385, false, true, false);
 
-        game.setEntityCleanupByEngine(jet, false);
-        game.setEntityVisible(jet, true, false);
+        game.setEntityCleanupByEngine(this.jet, false);
+        game.setEntityVisible(this.jet, true, false);
 
-        game.registerEntityForCutscene(jet, "MP_Plane", 0, 0, 0);
+        game.registerEntityForCutscene(this.jet, "MP_Plane", 0, 0, 0);
 
         if(gender == 0) {
             game.registerEntityForCutscene(0, "MP_Female_Character", 3, alt.hash("mp_f_freemode_01"), 0);
-            game.registerEntityForCutscene(ped, "MP_Male_Character", 0, 0, 0);
+            game.registerEntityForCutscene(this.ped, "MP_Male_Character", 0, 0, 0);
         } else {
             game.registerEntityForCutscene(0, "MP_Male_Character", 3, alt.hash("mp_m_freemode_01"), 0);
-            game.registerEntityForCutscene(ped, "MP_Female_Character", 0, 0, 0);
+            game.registerEntityForCutscene(this.ped, "MP_Female_Character", 0, 0, 0);
         }
 
-        game.setEntityVisible(ped, true, false);
+        game.setEntityVisible(this.ped, true, false);
         for (let i = 1; i < 8; i++){
             game.registerEntityForCutscene(0, "MP_Plane_Passenger_" + i, 3, alt.hash("mp_m_freemode_01"), 0);
             game.setCutsceneEntityStreamingFlags("MP_Plane_Passenger_" + i, 0, 0);
@@ -84,15 +88,26 @@ class WelcomeCutscene {
     }
 
     stop() {
-        //if(!this.started) return;
+        if(!game.isCutsceneActive() && !game.isCutscenePlaying()) return alt.log("No cutscene is active or playing!");
         this.started = false;
 
         game.triggerMusicEvent("FM_INTRO_DRIVE_END");
         game.stopCutsceneImmediately();
+        game.shutdownLoadingScreen();
 
-        game.setEntityVisible(alt.Player.local.scriptID, true, false);
+        if(this.ped) game.deletePed(this.ped);
+        if(this.jet) game.deleteVehicle(this.jet);
 
-        alt.setTimeout(() => game.doScreenFadeOut(100), 100);
+        game.doScreenFadeIn(200);
+
+        alt.setTimeout(() => {
+            game.shutdownLoadingScreen();
+            game.setNoLoadingScreen(true);
+
+            game.setEntityInvincible(alt.Player.local.scriptID, false);
+            game.setEntityAlpha(alt.Player.local.scriptID, 255, false);
+            game.setEntityVisible(alt.Player.local.scriptID, true, false);
+        }, 100);
     }
 
     async waitForCutscene() {
