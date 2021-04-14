@@ -7,7 +7,7 @@ class Webview {
     webView: alt.WebView;
 
     constructor() {
-        this.webView = new alt.WebView(devMode ? "http://localhost:8080/" : "http://assets/paradox-web/index.html");
+        this.webView = new alt.WebView(devMode ? "http://localhost:8080/" : "http://assets/paradox_web/html/index.html");
         this.webView.on("load", this.onLoad.bind(this));
 
         EventHandler.onServer("Webview::ShowWindow", this.showWindow.bind(this));
@@ -16,6 +16,7 @@ class Webview {
 
     onLoad() {
         this.webView.unfocus();
+
         alt.log("WebView -> Loaded");
     }
 

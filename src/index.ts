@@ -15,6 +15,7 @@ import "./systems/hud/chat";
 import "./systems/hud/xmenu";
 import "./systems/hud/info";
 import "./systems/hud/weaponinfo";
+import "./systems/phone";
 
 import alt from 'alt-client';
 import game from 'natives';
@@ -27,6 +28,13 @@ alt.on("connectionComplete", () => {
     alt.setStat(alt.StatName.Flying, 100);
     alt.setStat(alt.StatName.Shooting, 100);
     alt.setStat(alt.StatName.Stealth, 100);
+});
+
+alt.everyTick(() => {
+    if(game.isPedArmed(alt.Player.local.scriptID, 6)) {
+        game.disableControlAction(0, 141, true);
+        game.disableControlAction(0, 142, true);
+    }
 });
 
 alt.on("gameEntityCreate", entity => {
