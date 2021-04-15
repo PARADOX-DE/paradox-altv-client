@@ -4,11 +4,23 @@ import game from 'natives';
 import View from '../../classes/View';
 import Streets from '../../data/streets';
 
+import EventHandler from '../../handlers/EventHandler';
+
 class InfoView extends View {
+    admin_duty: boolean;
+
     constructor() {
         super("Info");
 
+        this.admin_duty = false;
+
         alt.everyTick(this.onEveryTick.bind(this));
+        EventHandler.onServer("UpdateAdminDuty", this.UpdateAdminDuty.bind(this));
+    }
+
+    UpdateAdminDuty() {
+        this.admin_duty = !this.admin_duty;
+        this.emit("AdminDuty::Update", this.admin_duty);
     }
 
     onEveryTick() {
