@@ -20,9 +20,9 @@ class Webview {
         alt.log("WebView -> Loaded");
     }
 
-    showWindow(name: string, ...args: any[]) {
-        this.webView.emit("showWindow", name, ...args);
-
+    showWindow(name: string, args: any[]) {
+        this.webView.emit("showWindow", name, args);
+        alt.log(name + " " + JSON.stringify(args));
         alt.showCursor(true);
         alt.toggleGameControls(false);
     }
