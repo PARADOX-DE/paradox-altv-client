@@ -16,6 +16,7 @@ import "./systems/hud/notification";
 import "./systems/hud/xmenu";
 import "./systems/hud/info";
 import "./systems/hud/weaponinfo";
+import "./systems/hud/speedometer";
 import "./systems/phone";
 
 import alt from 'alt-client';

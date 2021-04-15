@@ -45,14 +45,80 @@ class XMenuView extends View {
     }
 
     openXMenu() {
+        const localPlayer = alt.Player.local;
         const raycast = this.getRaycast();
-        let items: any[] = [{ name: "UR" }];
+        let items: any[] = [{ title: "Perso zeigen", desc: "", icon: 'player/perso' }];
 
         if(raycast[4]) {
             this.targetId = raycast[4];
 
-            if(game.isEntityAVehicle(raycast[4])) {
-                items = [{ name: "UR" }, { name: "UR" }];
+            if(localPlayer.vehicle != null) {
+                items = [{
+					title: 'UR',
+                    desc: "",
+                    icon: 'exit'
+				},
+				{
+					title: 'UR',
+                    desc: "",
+                    icon: 'exit'
+				},
+				{
+					title: 'UR',
+                    desc: "",
+                    icon: 'exit'
+				},
+				{
+					title: 'UR',
+                    desc: "",
+                    icon: 'exit'
+				},
+				{
+					title: 'UR',
+                    desc: "",
+                    icon: 'exit'
+				},
+				{
+					title: 'UR',
+                    desc: "",
+                    icon: 'exit'
+				},
+				{
+					title: 'UR',
+                    desc: "",
+                    icon: 'exit'
+				},
+				{
+					title: 'UR',
+                    desc: "",
+                    icon: 'exit'
+				}];
+            } else if(game.isEntityAVehicle(raycast[4])) {
+                items = [{
+					title: 'Schließen',
+                    desc: "Schließe das Menü",
+                    icon: 'vehicle/exit'
+				},
+				{
+					title: 'Kofferraum öffnen/schließen',
+                    desc: "Öffne/Schließe den Kofferraum des Fahrzeuges",
+                    icon: 'vehicle/trunk'
+				},
+				{
+					title: 'Motorhaube öffnen/schließen',
+                    desc: "Öffne/Schließe die Motorhaube des Fahrzeuges",
+                    icon: 'vehicle/hood'
+				},
+				{
+					title: 'Auf/Zuschließen',
+                    desc: "Öffne/Schließe das Fahrzeug",
+                    icon: 'vehicle/key'
+				},
+				{
+					title: 'Starten/Stoppen',
+                    desc: "Starte/Stoppe den Fahrzeug Motor",
+                    icon: 'vehicle/engine'
+				}];
 
                 game.setVehicleLights(raycast[4], 2);
                 alt.setTimeout(() => game.setVehicleLights(raycast[4], 1), 300);
