@@ -5,6 +5,9 @@ const altv = require('altv-webpack-plugin');
 module.exports = {
 	mode: "production",
     entry: "./src/index.ts",
+    performance: {
+        hints: false,
+    },
 	module: {
 		rules: [
 			{
