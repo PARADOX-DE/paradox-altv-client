@@ -1,13 +1,11 @@
 import alt from 'alt-client';
 import EventHandler from '../handlers/EventHandler';
 
-const devMode = true;
-
 class Webview {
     webView: alt.WebView;
 
     constructor() {
-        this.webView = new alt.WebView(devMode ? "http://localhost:8080/" : "http://assets/paradox_web/html/index.html");
+        this.webView = new alt.WebView(process.env.NODE_ENV !== 'production' ? "http://localhost:8080/" : "http://assets/paradox_web/html/index.html");
         this.webView.on("load", this.onLoad.bind(this));
 
         EventHandler.onServer("Webview::ShowWindow", this.showWindow.bind(this));
