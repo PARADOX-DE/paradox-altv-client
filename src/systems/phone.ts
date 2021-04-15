@@ -131,13 +131,17 @@ class PhoneView extends View {
         this.open = true;
 
         if(this.phoneObject) game.deleteObject(this.phoneObject);
-        this.playAnimation("text", false, false).then(() => this.waitForModel().then(() => {
+        this.playAnimation("text", false, false).then(() => alt.setTimeout(() => this.waitForModel().then(() => {
             this.phoneObject = game.createObject(alt.hash(this.phoneModel), 1, 1, 1, false, false, false);
 
             const bone = game.getPedBoneIndex(alt.Player.local.scriptID, 28422);
             game.attachEntityToEntity(this.phoneObject, alt.Player.local.scriptID, bone, 0, 0, 0, 0, 0, 0, true, true, false, false, 2, true);
+
             this.webview.emit("showWindow", "Phone");
-        }));
+
+            alt.toggleGameControls(false);
+            alt.showCursor(true);
+        }), 200));
 
         return true;
     }
@@ -149,6 +153,9 @@ class PhoneView extends View {
             game.deleteObject(this.phoneObject);
             game.stopAnimTask(alt.Player.local.scriptID, this.lastDict, this.lastAnim, 1);
         }
+
+        alt.toggleGameControls(true);
+        alt.showCursor(false);
 
         this.webview.emit("closeWindow", "Phone");
         return true;

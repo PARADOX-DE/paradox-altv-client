@@ -1,7 +1,7 @@
 import alt from 'alt-client';
 import EventHandler from '../handlers/EventHandler';
 
-const devMode = true;
+const devMode = false;
 
 class Webview {
     webView: alt.WebView;
