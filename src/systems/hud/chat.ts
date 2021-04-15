@@ -10,8 +10,9 @@ class ChatView extends View {
         super("Chat");
 
         this.on("Send", this.onMessage.bind(this));
-
+        
         new KeyHandler("T", 84, this.openChat.bind(this), true);
+        EventHandler.onServer("Chat::Receive", this.receiveMessage.bind(this));
     }
 
     openChat() {
@@ -31,6 +32,10 @@ class ChatView extends View {
         alt.showCursor(false);
 
         EventHandler.emitServer("chat:message", message);
+    }
+
+    receiveMessage(title: string, message: string, error: boolean) {
+        this.emit("Receive", title, message, error);
     }
 }
 

@@ -12,6 +12,7 @@ import "./systems/hud";
 import "./systems/bank";
 
 import "./systems/hud/chat";
+import "./systems/hud/notification";
 import "./systems/hud/xmenu";
 import "./systems/hud/info";
 import "./systems/hud/weaponinfo";
