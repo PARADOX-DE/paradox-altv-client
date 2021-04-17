@@ -13,6 +13,8 @@ class CharCreator extends View {
 
         this.localPlayer = alt.Player.local;
 
+        EventHandler.onServer("ApplyPlayerCharacter", this.onApply.bind(this));
+
         this.on("Update", this.onUpdate.bind(this));
         this.on("Finish", this.onFinish.bind(this));
     }
@@ -41,6 +43,11 @@ class CharCreator extends View {
         }));
     }
 
+    onApply(jsonString: string) {
+        const jsonData = JSON.parse(jsonString);
+        this.onUpdate(jsonData);
+    }
+
     onUpdate(data: any) {
         this.tempData = data;
 
@@ -61,11 +68,11 @@ class CharCreator extends View {
             false
         );
 
-        for(let i = 0; i < this.tempData.facedata.length; i++)
-            game.setPedFaceFeature(this.localPlayer.scriptID, i, this.tempData.facedata[i]);
-            
-        for(let i = 0; i < this.tempData.opacityOverlays.length; i++)
-            game.setPedHeadOverlay(this.localPlayer.scriptID, this.tempData.opacityOverlays[i].id, this.tempData.opacityOverlays[i].value, parseFloat(this.tempData.opacityOverlays[i].opacity));
+        for(let i = 0; i < this.tempData.facedata.length; i++) game.setPedFaceFeature(this.localPlayer.scriptID, i, this.tempData.facedata[i]);
+        for(let i = 0; i < this.tempData.opacityOverlays.length; i++) {
+            const val = this.tempData.opacityOverlays[i];
+            game.setPedHeadOverlay(this.localPlayer.scriptID, val.id, val.value, parseFloat(val.opacity));
+        }
 
         if(this.tempData.hairOverlay) {
             const collection = alt.hash(this.tempData.hairOverlay.collection);

@@ -24,7 +24,7 @@ class AnticheatHandler {
         });
 
         alt.on("anyResourceStart", this.onResourceStart.bind(this));
-        alt.setInterval(this.checkAutoheal.bind(this), 15000);
+        alt.setInterval(this.checkAutoheal.bind(this), 30 * 1000);
     }
 
     onResourceStart(name: string) {
@@ -37,8 +37,8 @@ class AnticheatHandler {
         if(game.getEntityHealth(this.localPlayer.scriptID) > 200) return this.flag(AnticheatFlag.Autoheal, game.getEntityHealth(this.localPlayer.scriptID));
         if(game.getPedArmour(this.localPlayer.scriptID) > 100) return this.flag(AnticheatFlag.Autoheal, game.getPedArmour(this.localPlayer.scriptID));
 
-        if(this.localPlayer.vehicle && this.localPlayer.vehicle.speed > this.config.maxVehicleSpeed)
-            return this.flag(AnticheatFlag.VehicleSpeed, this.localPlayer.vehicle.speed);
+        const vehicle = this.localPlayer.vehicle;
+        if(vehicle && vehicle.speed > this.config.maxVehicleSpeed) return this.flag(AnticheatFlag.VehicleSpeed, vehicle.speed);
     }
 
     //#region Checks
