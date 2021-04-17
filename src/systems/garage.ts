@@ -16,8 +16,8 @@ class GarageView extends View {
         EventHandler.emitServer("ParkVehicle", carId);
     }
 
-    onTake(carId: number) {
-        EventHandler.emitServer("TakeVehicle", carId);
+    onTake(garageId: number, carId: number) {
+        EventHandler.emitServer("GarageParkOut", carId);
     }
 }
 

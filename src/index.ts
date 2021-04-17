@@ -19,6 +19,9 @@ import "./systems/hud/weaponinfo";
 import "./systems/hud/speedometer";
 import "./systems/phone";
 
+import "./systems/clothing";
+import "./systems/blips";
+
 import alt from 'alt-client';
 import game from 'natives';
 
