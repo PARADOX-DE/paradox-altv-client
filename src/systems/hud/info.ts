@@ -7,21 +7,31 @@ import Streets from '../../data/streets';
 import EventHandler from '../../handlers/EventHandler';
 
 class InfoView extends View {
+    money: number;
     admin_duty: boolean;
 
     constructor() {
         super("Info");
 
         this.admin_duty = false;
+        this.money = 0;
 
         alt.everyTick(this.onEveryTick.bind(this));
         EventHandler.onServer("UpdateAdminDuty", this.UpdateAdminDuty.bind(this));
+        EventHandler.onServer("UpdateMoney", this.UpdateMoney.bind(this));
     }
 
     UpdateAdminDuty() {
         this.admin_duty = !this.admin_duty;
         this.emit("AdminDuty::Update", this.admin_duty);
     }
+
+    UpdateMoney(money: number) {
+        this.money = money;
+        this.emit("Money::Update", money);
+    }
+
+    
 
     onEveryTick() {
         const localPlayer = alt.Player.local;
