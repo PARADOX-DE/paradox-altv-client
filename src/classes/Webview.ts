@@ -15,7 +15,8 @@ class Webview {
     onLoad() {
         this.webView.unfocus();
 
-        alt.log("WebView -> Loaded");
+        alt.log("[PX-RP] Das Interface wurde erfolgreich geladen.");
+        EventHandler.emitServer("PlayerReady");
     }
 
     showWindow(name: string, args: any[]) {

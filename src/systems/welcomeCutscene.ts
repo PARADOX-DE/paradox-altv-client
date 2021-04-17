@@ -2,6 +2,7 @@ import alt from 'alt-client';
 import game from 'natives';
 
 import KeyHandler from '../handlers/KeyHandler';
+import EventHandler from '../handlers/EventHandler';
 
 class WelcomeCutscene {
     started: boolean;
@@ -11,17 +12,8 @@ class WelcomeCutscene {
     constructor() {
         this.started = false;
 
-        new KeyHandler("F3", 114, () => {
-            this.start();
-
-            return true;
-        });
-
-        new KeyHandler("F4", 115, () => {
-            this.stop();
-
-            return true;
-        });
+        EventHandler.onServer("StartArrivalCutscene", this.start.bind(this));
+        EventHandler.onServer("StopArrivalCutscene", this.stop.bind(this));
 
         alt.on("disconnect", this.stop.bind(this));
         alt.everyTick(this.onTick.bind(this));
