@@ -12,7 +12,7 @@
   "dependencies": {
     "@altv/types-client": "^1.5.4",
     "@altv/types-natives": "^1.2.2",
-    "git": "file:github.com:micaww\\altv-webpack-plugin.git#webpack-v5",
+    "webpack-messages": "^2.0.4",
     "webpack-obfuscator": "^2.6.0"
   },
   "devDependencies": {

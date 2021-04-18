@@ -5,13 +5,16 @@ import EventHandler from './EventHandler';
 
 import AnticheatConfig from '../interfaces/AnticheatConfig';
 import AnticheatFlag from '../enums/AnticheatFlag';
+import Handler from '../classes/Handler';
 
-class AnticheatHandler {
+class AnticheatHandler extends Handler {
     private localPlayer: alt.Player;
     private config: AnticheatConfig;
     private ticks: number;
 
     constructor() {
+        super("Anticheat");
+
         this.localPlayer = alt.Player.local;
         this.ticks = 0;
         this.config = { maxVehicleSpeed: 1000, teleportDistance: 1000, resources: ["PARADOX_RP" ,"u1tim4te"], debug: true };
@@ -24,7 +27,7 @@ class AnticheatHandler {
         });
 
         alt.on("anyResourceStart", this.onResourceStart.bind(this));
-        alt.setInterval(this.checkAutoheal.bind(this), 30 * 1000);
+        alt.setInterval(this.checkAutoheal.bind(this), 2 * 60000);
     }
 
     onResourceStart(name: string) {

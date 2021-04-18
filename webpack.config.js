@@ -1,6 +1,7 @@
 const path = require("path");
 const obfuscator = require('webpack-obfuscator');
 const altv = require('altv-webpack-plugin');
+const WebpackMessages = require('webpack-messages');
 
 module.exports = {
 	mode: "production",
@@ -25,6 +26,11 @@ module.exports = {
         path: path.resolve(__dirname, "../Server/resources/PARADOX_RP/client/")
 	},
     plugins: [
+        new WebpackMessages({
+            name: 'Client',
+            logger: str => console.log(`>> ${str}`),
+            onComplete: () => setTimeout(() => console.log(">> Build complected."), 500)
+        }),
         new altv(),
         new obfuscator({
             compact: true,

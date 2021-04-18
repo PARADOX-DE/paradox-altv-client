@@ -1,5 +1,6 @@
 import alt from 'alt-client';
 import game from 'natives';
+import Handler from '../classes/Handler';
 import Webview from '../classes/Webview';
 const list: KeyHandler[] = [];
 
