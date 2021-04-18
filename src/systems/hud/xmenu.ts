@@ -98,12 +98,12 @@ class XMenuView extends View {
                 items = [{
 					title: 'Schließen',
                     desc: "Schließe das Menü",
-                    icon: 'vehicle/exit'
+                    icon: 'vehicle/exit',
 				},
 				{
 					title: 'Kofferraum öffnen/schließen',
                     desc: "Öffne/Schließe den Kofferraum des Fahrzeuges",
-                    icon: 'vehicle/trunk'
+                    icon: 'vehicle/trunk',
 				},
 				{
 					title: 'Motorhaube öffnen/schließen',
