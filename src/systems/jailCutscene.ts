@@ -9,8 +9,10 @@ class JailCutscene {
     policeModel: string = "s_m_y_cop_01";
     policePed: number;
     camera: number;
+    started: boolean;
 
     constructor() {
+        this.started = false;
         this.policePed = 0;
         this.camera = 0;
 
@@ -47,7 +49,9 @@ class JailCutscene {
     }
 
     async start() {
-        this.stop();
+        if(this.started) return;
+        this.started = true;
+
         alt.toggleGameControls(false);
 
         const localPlayer = alt.Player.local;
@@ -76,10 +80,13 @@ class JailCutscene {
                 game.freezeEntityPosition(this.policePed, false);
                 game.freezeEntityPosition(alt.Player.local.scriptID, false);
             }, 3200);
-        }, 2500);
+        }, 2300);
     }
 
     async stop() {
+        if(!this.started) return;
+        this.started = false;
+        
         alt.toggleGameControls(true);
         game.setModelAsNoLongerNeeded(alt.hash(this.policeModel));
 
