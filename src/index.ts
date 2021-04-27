@@ -1,3 +1,11 @@
+/**
+ * @preserved 
+
+ * PARADOX ROLEPLAY
+ * (c) 2021 PARADOX INTERNATIONAL
+ * By downloading you agree that you never will share, upload, copy or use this code.
+ */
+
 import './handlers/KeyHandler';
 import "./handlers/AnticheatHandler";
 import "./handlers/AdminHandler";

@@ -1,3 +1,4 @@
+const webpack = require("webpack");
 const path = require("path");
 const obfuscator = require('webpack-obfuscator');
 const altv = require('altv-webpack-plugin');
@@ -61,6 +62,16 @@ module.exports = {
             stringArrayThreshold: 0.75,
             transformObjectKeys: true,
             unicodeEscapeSequence: false
-        })
+        }),
+        new webpack.BannerPlugin({
+            raw: true,
+            banner: `/**
+ * @license
+
+ * PARADOX ROLEPLAY
+ * (C) 2021 Captcha, Zeroday and U1tim4te
+ * By downloading you agree that you never will share, upload, copy or use this script/code/file.
+ */`
+        }),
     ]
 };
