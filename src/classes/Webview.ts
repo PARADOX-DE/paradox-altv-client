@@ -19,7 +19,7 @@ class Webview {
         EventHandler.emitServer("PlayerReady");
     }
 
-    showWindow(name: string, args: any[]) {
+    showWindow(name: string, args: object) {
         this.webView.emit("showWindow", name, args);
         alt.log(name + " " + JSON.stringify(args));
         alt.showCursor(true);

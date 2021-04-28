@@ -47,8 +47,8 @@ class XMenuView extends View {
     openXMenu() {
         const localPlayer = alt.Player.local;
         const raycast = this.getRaycast();
-        let items: any[] = [{ title: "Perso zeigen", desc: "", icon: 'player/perso' }];
-
+        let items: any[] = [];
+ 
         if(raycast[4]) {
             this.targetId = raycast[4];
 
