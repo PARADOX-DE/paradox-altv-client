@@ -22,7 +22,6 @@ class SpeedometerView extends View {
             const vehicle = localPlayer.vehicle;
             const speed = (vehicle.speed * 3.6).toFixed(0);
 
-            // visible, speed, engine, locked, light
             this.emit(
                 "Update",
                 true,

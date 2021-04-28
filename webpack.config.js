@@ -1,6 +1,8 @@
+const webpack = require("webpack");
 const path = require("path");
 const obfuscator = require('webpack-obfuscator');
 const altv = require('altv-webpack-plugin');
+const WebpackMessages = require('webpack-messages');
 
 module.exports = {
 	mode: "production",
@@ -25,6 +27,11 @@ module.exports = {
         path: path.resolve(__dirname, "../Server/resources/PARADOX_RP/client/")
 	},
     plugins: [
+        new WebpackMessages({
+            name: 'Client',
+            logger: str => console.log(`>> ${str}`),
+            onComplete: () => setTimeout(() => console.log(">> Build complected."), 500)
+        }),
         new altv(),
         new obfuscator({
             compact: true,
@@ -55,6 +62,16 @@ module.exports = {
             stringArrayThreshold: 0.75,
             transformObjectKeys: true,
             unicodeEscapeSequence: false
-        })
+        }),
+        new webpack.BannerPlugin({
+            raw: true,
+            banner: `/**
+ * @license
+
+ * PARADOX ROLEPLAY
+ * (C) 2021 Captcha, Zeroday and U1tim4te
+ * By downloading you agree that you never will share, upload, copy or use this script/code/file.
+ */`
+        }),
     ]
 };

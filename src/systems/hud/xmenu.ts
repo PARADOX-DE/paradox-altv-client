@@ -51,6 +51,7 @@ class XMenuView extends View {
         
         if(raycast[4]) {
             this.targetId = raycast[4];
+            if(this.targetId == undefined || this.targetId == 11010) return false;
 
             if(localPlayer.vehicle != null) {
                 items = [{

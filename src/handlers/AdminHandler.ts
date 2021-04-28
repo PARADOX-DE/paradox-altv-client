@@ -1,15 +1,18 @@
 import alt from 'alt-client';
 import game from 'natives';
+import Handler from '../classes/Handler';
 
 import EventHandler from './EventHandler';
 import KeyHandler from './KeyHandler';
 
-class AdminHandler {
+class AdminHandler extends Handler {
     private localPlayer: alt.Player;
     private aduty: boolean;
     private noclip: boolean;
 
     constructor() {
+        super("Admin");
+
         this.localPlayer = alt.Player.local;
         this.aduty = true;
         this.noclip = false;
@@ -23,7 +26,7 @@ class AdminHandler {
             return true;
         });
 
-        new KeyHandler("F2", 113, this.toggleNoclip.bind(this));
+        new KeyHandler("F3", 114, this.toggleNoclip.bind(this));
 
         alt.everyTick(this.onTick.bind(this));
     }

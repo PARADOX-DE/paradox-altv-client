@@ -31,8 +31,6 @@ class InfoView extends View {
         this.emit("Money::Update", money);
     }
 
-    
-
     onEveryTick() {
         const localPlayer = alt.Player.local;
         const zoneName = game.getNameOfZone(localPlayer.pos.x, localPlayer.pos.y, localPlayer.pos.z);

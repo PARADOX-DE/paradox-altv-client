@@ -12,6 +12,7 @@
   "dependencies": {
     "@altv/types-client": "^1.5.4",
     "@altv/types-natives": "^1.2.2",
+    "webpack-messages": "^2.0.4",
     "webpack-obfuscator": "^2.6.0"
   },
   "devDependencies": {
