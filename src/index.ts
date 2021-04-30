@@ -28,6 +28,7 @@ import "./systems/hud/info";
 import "./systems/hud/weaponinfo";
 import "./systems/hud/speedometer";
 import "./systems/phone";
+import "./systems/confirmation";
 
 import "./systems/clothing";
 import "./systems/blips";
