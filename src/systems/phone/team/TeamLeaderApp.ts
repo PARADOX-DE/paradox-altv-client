@@ -7,6 +7,8 @@ import View from '../../../classes/View';
 class TeamLeaderAppView extends View {
     constructor() {
         super("TeamLeaderApp");
+
+        this.on("InviteTeamMember", this.inviteTeamMember.bind(this));
     }
 
     inviteTeamMember(inviteString: string) {

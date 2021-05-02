@@ -7,13 +7,13 @@ import View from '../classes/View';
 
 class ProgressbarView extends View {
     constructor() {
-        super("ProgressBar");
+        super("Progressbar");
 
         EventHandler.onServer("Progress::Start", this.startBar.bind(this));
     }
 
-    startBar(time: number) {
-        this.emit("Start", time);
+    startBar(title: string, message: string, time: number) {
+        this.emit("Start", title, message, time);
     }
 }
 

@@ -33,6 +33,7 @@ import "./systems/confirmation";
 
 import "./systems/clothing";
 import "./systems/blips";
+import "./systems/animations";
 
 import alt from 'alt-client';
 import game from 'natives';
