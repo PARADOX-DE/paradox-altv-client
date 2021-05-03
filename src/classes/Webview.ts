@@ -13,8 +13,8 @@ class Webview {
         EventHandler.onServer("Webview::ShowWindow", this.showWindow.bind(this));
         EventHandler.onServer("Webview::CloseWindow", this.closeWindow.bind(this));
 
-        this.webView.on("showCursor", controls.showCursor.bind(this));
-        this.webView.on("toggleGameControls", controls.toggleGameControls.bind(this));
+        this.webView.on("showCursor", state => controls.showCursor(state));
+        this.webView.on("toggleGameControls", state => controls.toggleGameControls(state));
 
         this.webView.on("triggerServerEvent", (eventName, ...args) => EventHandler.emitServer(eventName, ...args));
     }

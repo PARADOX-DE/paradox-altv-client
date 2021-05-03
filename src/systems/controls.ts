@@ -10,6 +10,7 @@ class Controls {
     }
 
     showCursor(state: boolean) {
+        alt.log("State: " + state);
         if(state == undefined || this.cursor == state) return;
 
         this.cursor = state;
@@ -17,6 +18,7 @@ class Controls {
     }
 
     toggleGameControls(state: boolean) {
+        alt.log("State: " + state);
         if(state == undefined || this.controls == state) return;
 
         this.controls = state;
