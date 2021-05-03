@@ -2,6 +2,7 @@ import alt from 'alt-client';
 import game from 'natives';
 import Handler from '../classes/Handler';
 import Webview from '../classes/Webview';
+import controls from '../systems/controls';
 const list: KeyHandler[] = [];
 
 class KeyHandler {
@@ -30,7 +31,7 @@ alt.on("keydown", key => {
     for(const handler of KeyHandler.all) {
         if(!handler.needDown) continue;
         if(handler.code != key) continue;
-        if(handler.needControls == true && !alt.gameControlsEnabled()) continue; 
+        if(handler.needControls == true && !controls.controls) continue; 
 
         if(!handler.func) alt.emitServer(`Pressed_${handler.key}`);
         else if(handler.func()) break;
@@ -41,7 +42,7 @@ alt.on("keyup", key => {
     for(const handler of KeyHandler.all) {
         if(handler.needDown) continue;
         if(handler.code != key) continue;
-        if(handler.needControls == true && !alt.gameControlsEnabled()) continue; 
+        if(handler.needControls == true && !controls.controls) continue; 
 
         if(!handler.func) alt.emitServer(`Pressed_${handler.key}`);
         else if(handler.func()) break;
@@ -53,8 +54,8 @@ new KeyHandler("E", 69, undefined, true);
 new KeyHandler("F5", 116, () => {
     Webview.webView.focus();
 
-    alt.showCursor(true);
-    alt.toggleGameControls(false);
+    controls.showCursor(true);
+    controls.toggleGameControls(false);
 
     return true;
 });
@@ -62,8 +63,8 @@ new KeyHandler("F5", 116, () => {
 new KeyHandler("F6", 117, () => {
     Webview.webView.unfocus();
 
-    alt.showCursor(false);
-    alt.toggleGameControls(true);
+    controls.showCursor(false);
+    controls.toggleGameControls(true);
 
     return true;
 });
