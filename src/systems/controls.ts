@@ -10,14 +10,14 @@ class Controls {
     }
 
     showCursor(state: boolean) {
-        if(this.cursor === state) return;
+        if(state == undefined || this.cursor === state) return;
 
         this.cursor = state;
         alt.showCursor(this.cursor);
     }
 
     toggleGameControls(state: boolean) {
-        if(this.controls === state) return;
+        if(state == undefined || this.controls === state) return;
 
         this.controls = state;
         alt.toggleGameControls(this.controls);
