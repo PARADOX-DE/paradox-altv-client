@@ -4,6 +4,7 @@ import game from 'natives';
 import EventHandler from '../../handlers/EventHandler';
 import KeyHandler from '../../handlers/KeyHandler';
 import View from '../../classes/View';
+import controls from '../controls';
 
 class ChatView extends View {
     constructor() {
@@ -19,8 +20,8 @@ class ChatView extends View {
         this.webview.focus();
         this.emit("Show");
 
-        alt.toggleGameControls(false);
-        alt.showCursor(true);
+        controls.toggleGameControls(false);
+        controls.showCursor(true);
 
         return true;
     }
@@ -28,8 +29,8 @@ class ChatView extends View {
     onMessage(message: string) {
         this.webview.unfocus();
 
-        alt.toggleGameControls(true);
-        alt.showCursor(false);
+        controls.toggleGameControls(true);
+        controls.showCursor(false);
 
         EventHandler.emitServer("chat:message", message);
     }

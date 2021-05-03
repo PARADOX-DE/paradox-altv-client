@@ -5,6 +5,7 @@ import EventHandler from '../../handlers/EventHandler';
 import KeyHandler from '../../handlers/KeyHandler';
 import View from '../../classes/View';
 import Marker from '../../classes/Marker';
+import controls from '../controls';
 
 class XMenuView extends View {
     targetMarker?: Marker;
@@ -128,8 +129,9 @@ class XMenuView extends View {
 
         const [_, x, y] = game.getActiveScreenResolution();
 
-        alt.toggleGameControls(false);
-        alt.showCursor(true);
+        controls.toggleGameControls(false);
+        controls.showCursor(true);
+
         alt.setCursorPos({ x: x / 2, y: y / 2 });
 
         this.webview.focus();
@@ -139,8 +141,8 @@ class XMenuView extends View {
     }
 
     closeXMenu() {
-        alt.showCursor(false);
-        alt.toggleGameControls(true);
+        controls.showCursor(false);
+        controls.toggleGameControls(true);
 
         if(this.targetMarker) this.targetMarker.destroy();
 

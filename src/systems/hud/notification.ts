@@ -13,7 +13,6 @@ class NotificationView extends View {
     }
 
     pushNotification(title: string, text: string, time: number) {
-        alt.log(title);
         this.emit("PushNotification", title, text, time);
     }
 }

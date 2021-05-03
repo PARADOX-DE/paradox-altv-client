@@ -4,6 +4,7 @@ import PedType from '../enums/PedType';
 import AnimationHandler from '../handlers/AnimationHandler';
 import EventHandler from '../handlers/EventHandler';
 import KeyHandler from '../handlers/KeyHandler';
+import controls from './controls';
 
 class JailCutscene {
     policeModel: string = "s_m_y_cop_01";
@@ -52,7 +53,7 @@ class JailCutscene {
         if(this.started) return;
         this.started = true;
 
-        alt.toggleGameControls(false);
+        controls.toggleGameControls(false);
 
         const localPlayer = alt.Player.local;
         game.setEntityCoords(localPlayer.scriptID, 459.65, -1001.79, 24.91 - 0.97, true, false, false, true);
@@ -87,7 +88,7 @@ class JailCutscene {
         if(!this.started) return;
         this.started = false;
         
-        alt.toggleGameControls(true);
+        controls.toggleGameControls(true);
         game.setModelAsNoLongerNeeded(alt.hash(this.policeModel));
 
         if(this.policePed != 0) {

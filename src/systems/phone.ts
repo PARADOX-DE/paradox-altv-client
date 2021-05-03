@@ -3,6 +3,7 @@ import game from 'natives';
 
 import KeyHandler from '../handlers/KeyHandler';
 import View from '../classes/View';
+import controls from './controls';
 
 const animations = {
     "cellphone@": {
@@ -139,8 +140,8 @@ class PhoneView extends View {
 
             this.webview.emit("showWindow", "Phone", [{}]);
 
-            alt.toggleGameControls(false);
-            alt.showCursor(true);
+            controls.toggleGameControls(false);
+            controls.showCursor(true);
         }), 200));
 
         return true;
@@ -154,8 +155,8 @@ class PhoneView extends View {
             game.stopAnimTask(alt.Player.local.scriptID, this.lastDict, this.lastAnim, 1);
         }
 
-        alt.toggleGameControls(true);
-        alt.showCursor(false);
+        controls.toggleGameControls(true);
+        controls.showCursor(false);
 
         this.webview.emit("closeWindow", "Phone");
         return true;
