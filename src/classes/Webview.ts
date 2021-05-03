@@ -29,15 +29,19 @@ class Webview {
     showWindow(name: string, args: {}) {
         this.webView.emit("showWindow", name, args);
         
-        controls.showCursor(true);
-        controls.toggleGameControls(false);
+        if(name !== "Hud") {
+            controls.showCursor(true);
+            controls.toggleGameControls(false);
+        }
     }
 
     closeWindow(name: string) {
         this.webView.emit("closeWindow", name);
 
-        controls.showCursor(false);
-        controls.toggleGameControls(true);
+        if(name !== "Hud") {
+            controls.showCursor(false);
+            controls.toggleGameControls(true);
+        }
     }
 
     popWindow() {
