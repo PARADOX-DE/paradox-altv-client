@@ -1,5 +1,6 @@
 import alt from 'alt-client';
 import EventHandler from '../handlers/EventHandler';
+import controls from '../systems/controls';
 import View from './View';
 
 class Webview {
@@ -12,8 +13,9 @@ class Webview {
         EventHandler.onServer("Webview::ShowWindow", this.showWindow.bind(this));
         EventHandler.onServer("Webview::CloseWindow", this.closeWindow.bind(this));
 
-        this.webView.on("showCursor", state => alt.showCursor(state));
-        this.webView.on("toggleGameControls", state => alt.toggleGameControls(state));
+        this.webView.on("showCursor", controls.showCursor.bind(this));
+        this.webView.on("toggleGameControls", controls.toggleGameControls.bind(this));
+
         this.webView.on("triggerServerEvent", (eventName, ...args) => EventHandler.emitServer(eventName, ...args));
     }
 
@@ -27,22 +29,22 @@ class Webview {
     showWindow(name: string, args: {}) {
         this.webView.emit("showWindow", name, args);
         
-        alt.showCursor(true);
-        alt.toggleGameControls(false);
+        controls.showCursor(true);
+        controls.toggleGameControls(false);
     }
 
     closeWindow(name: string) {
         this.webView.emit("closeWindow", name);
 
-        alt.showCursor(false);
-        alt.toggleGameControls(true);
+        controls.showCursor(false);
+        controls.toggleGameControls(true);
     }
 
     popWindow() {
         this.webView.emit("popWindow");
 
-        alt.showCursor(false);
-        alt.toggleGameControls(true);
+        controls.showCursor(false);
+        controls.toggleGameControls(true);
 
         return true;
     }
