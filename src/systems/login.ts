@@ -10,10 +10,15 @@ class LoginView extends View {
         super("Login");
 
         this.on("Auth", this.sendLogin.bind(this));
+        EventHandler.onServer("ResponseLoginStatus", this.responseLoginStatus.bind(this));
     }
 
     sendLogin(username: string, password: string) {
         EventHandler.emitServer("RequestLoginResponse", username, password);
+    }
+
+    responseLoginStatus(status: string){
+        this.emit("Status", status);
     }
 }
 
