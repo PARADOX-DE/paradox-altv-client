@@ -1,5 +1,6 @@
 import alt from 'alt-client';
 import EventHandler from '../handlers/EventHandler';
+import View from './View';
 
 class Webview {
     webView: alt.WebView;
@@ -10,18 +11,20 @@ class Webview {
 
         EventHandler.onServer("Webview::ShowWindow", this.showWindow.bind(this));
         EventHandler.onServer("Webview::CloseWindow", this.closeWindow.bind(this));
+
+        this.webView.on("triggerServerEvent", (eventName, ...args) => EventHandler.emitServer(eventName, ...args));
     }
 
     onLoad() {
-        this.webView.unfocus();
+        this.webView.focus();
 
         alt.log(`[WEBVIEW] >> Main interface loaded...`);
         EventHandler.emitServer("PlayerReady");
     }
 
-    showWindow(name: string, args: object) {
+    showWindow(name: string, args: {}) {
         this.webView.emit("showWindow", name, args);
-        alt.log(name + " " + JSON.stringify(args));
+        
         alt.showCursor(true);
         alt.toggleGameControls(false);
     }
@@ -40,6 +43,14 @@ class Webview {
         alt.toggleGameControls(true);
 
         return true;
+    }
+    
+    static get allViews() {
+        return View.all;
+    }
+
+    isOpen(window: string, checkHud: boolean = false) {
+        return checkHud ? Webview.allViews.some(x => x.name == window && x.open == true) : Webview.allViews.some(x => x.name == window && x.name != "Hud" && x.open == true);
     }
 }
 

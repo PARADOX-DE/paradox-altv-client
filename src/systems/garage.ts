@@ -19,6 +19,11 @@ class GarageView extends View {
     onTake(carId: number, garageId: number) {
         EventHandler.emitServer("GarageParkOut", carId, garageId);
     }
+
+    onClose() {
+        super.onClose();
+        alt.showCursor(false);
+    }
 }
 
 export default new GarageView();

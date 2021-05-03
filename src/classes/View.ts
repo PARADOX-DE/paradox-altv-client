@@ -5,9 +5,14 @@ let Views: View[] = [];
 
 class View {
     name: string;
+    open: boolean;
 
     constructor(name: string) {
         this.name = name;
+        this.open = false;
+
+        this.on("Close", this.onClose.bind(this));
+        this.on("Load", this.onOpen.bind(this));
 
         Views.push(this);
     }
@@ -22,6 +27,14 @@ class View {
 
     emit(eventName: string, ...args: any[]) {
         Webview.webView.emit(`${this.name}::${eventName}`, ...args);
+    }
+
+    onClose() {
+        this.open = false;
+    }
+
+    onOpen() {
+        this.open = true;
     }
 
     public get alt() {

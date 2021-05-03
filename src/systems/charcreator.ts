@@ -7,16 +7,23 @@ import View from '../classes/View';
 class CharCreator extends View {
     private localPlayer: alt.Player;
     private tempData: any;
+    private camera: number;
+    private fModel = alt.hash('mp_f_freemode_01');
+    private mModel = alt.hash(`mp_m_freemode_01`);
 
     constructor() {
         super("Charcreator");
 
+        this.camera = 0;
         this.localPlayer = alt.Player.local;
 
         EventHandler.onServer("ApplyPlayerCharacter", this.onApply.bind(this));
 
         this.on("Update", this.onUpdate.bind(this));
-        this.on("Finish", this.onFinish.bind(this));
+        this.on("Finish", this.onFinish.bind(this))
+
+        game.requestModel(this.fModel);
+        game.requestModel(this.mModel);
     }
 
     onFinish() {
@@ -50,6 +57,11 @@ class CharCreator extends View {
 
     onUpdate(data: any) {
         this.tempData = data;
+
+        const modelNeeded = this.tempData.sex === 0 ? this.fModel : this.mModel;
+        if(this.localPlayer.model !== modelNeeded) {
+            EventHandler.emitServer("setModel", modelNeeded);
+        }
 
         game.clearPedDecorations(this.localPlayer.scriptID);
         game.setPedHeadBlendData(this.localPlayer.scriptID, 0, 0, 0, 0, 0, 0, 0, 0, 0, false);
@@ -93,6 +105,33 @@ class CharCreator extends View {
         game.setPedComponentVariation(this.localPlayer.scriptID, 6, this.tempData.gender ? 35 : 34, 0, 0);
         game.setPedComponentVariation(this.localPlayer.scriptID, 8, 15, 0, 0);
         game.setPedComponentVariation(this.localPlayer.scriptID, 11, this.tempData.gender ? 15 : 91, 0, 0);
+    }
+
+    onOpen() {
+        super.onOpen();
+
+        alt.setTimeout(() => {
+            if(this.camera != 0) {
+                game.destroyCam(this.camera, false);
+                game.renderScriptCams(false, false, 0, false, false, 0);
+            }
+    
+            const offset = game.getOffsetFromEntityInWorldCoords(this.localPlayer.scriptID, 0, 3, 1);
+            this.camera = game.createCamWithParams("DEFAULT_SCRIPTED_CAMERA", offset.x, offset.y, offset.z, 0, 0, 0, 40, true, 2);
+    
+            game.setCamActive(this.camera, true);
+            game.pointCamAtCoord(this.camera, this.localPlayer.pos.x, this.localPlayer.pos.y, this.localPlayer.pos.z);
+            game.renderScriptCams(true, true, 500, false, false, 0);
+        }, 250);
+    }
+
+    onClose() {
+        super.onClose();
+        
+        if(this.camera != 0) {
+            game.destroyCam(this.camera, false);
+            game.renderScriptCams(false, false, 0, false, false, 0);
+        }
     }
 }
 
