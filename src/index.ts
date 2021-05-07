@@ -27,6 +27,7 @@ import "./systems/hud/xmenu";
 import "./systems/hud/info";
 import "./systems/hud/weaponinfo";
 import "./systems/hud/speedometer";
+import "./systems/hud/voice_section";
 import "./systems/phone";
 import "./systems/phone/team/TeamLeaderApp";
 import "./systems/confirmation";
