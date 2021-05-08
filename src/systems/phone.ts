@@ -138,7 +138,7 @@ class PhoneView extends View {
             const bone = game.getPedBoneIndex(alt.Player.local.scriptID, 28422);
             game.attachEntityToEntity(this.phoneObject, alt.Player.local.scriptID, bone, 0, 0, 0, 0, 0, 0, true, true, false, false, 2, true);
 
-            this.webview.emit("showWindow", "Phone", [{}]);
+            this.webview.emit("showWindow", "Phone", {});
 
             controls.toggleGameControls(false);
             controls.showCursor(true);
