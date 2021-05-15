@@ -69,7 +69,7 @@ module.exports = {
  * @license
 
  * PARADOX ROLEPLAY
- * (C) 2021 Captcha, Zeroday and U1tim4te
+ * (C) 2021 Captcha, zeroday and U1tim4te
  * By downloading you agree that you never will share, upload, copy or use this script/code/file.
  */`
         }),

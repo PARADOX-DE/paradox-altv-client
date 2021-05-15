@@ -6,7 +6,9 @@
         "esModuleInterop": true,
         "outDir": "../Server/resources/PARADOX_RP/client/",
   
-        "strict": true
+        "strict": true,
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true
     },
     "files": [
         "node_modules/@altv/types-natives/index.d.ts",

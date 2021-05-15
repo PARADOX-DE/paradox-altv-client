@@ -1,17 +1,15 @@
 import alt from 'alt-client';
 import game from 'natives';
 
-import View from '../../classes/View';
+import Window from '../../classes/Window';
 import Weapons from '../../data/weapons';
 
-class WeaponInfoView extends View {
+class WeaponInfoWindow extends Window {
     constructor() {
         super("WeaponInfo");
-
-        alt.everyTick(this.onEveryTick.bind(this));
     }
 
-    onEveryTick() {
+    onTick() {
         const localPlayer = alt.Player.local;
         const weaponName = Weapons.find(x => x.hash == localPlayer.currentWeapon);
 
@@ -19,4 +17,4 @@ class WeaponInfoView extends View {
     }
 }
 
-export default new WeaponInfoView();
+export default new WeaponInfoWindow();

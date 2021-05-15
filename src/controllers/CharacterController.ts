@@ -1,33 +1,34 @@
 import alt from 'alt-client';
 import game from 'natives';
 
-import EventHandler from '../handlers/EventHandler';
-import View from '../classes/View';
+import Controller from '../classes/Controller';
+import EventController from './EventController';
+import { ClientEvents, ServerEvents } from '../data/events';
 
-class CharCreator extends View {
+class CharacterController extends Controller {
     private localPlayer: alt.Player;
     private tempData: any;
-    private camera: number;
     private fModel = alt.hash('mp_f_freemode_01');
     private mModel = alt.hash(`mp_m_freemode_01`);
 
     constructor() {
-        super("Charcreator");
-
-        this.camera = 0;
+        super("Character");
+        
         this.localPlayer = alt.Player.local;
-
-        EventHandler.onServer("ApplyPlayerCharacter", this.onApply.bind(this));
-
-        this.on("Update", this.onUpdate.bind(this));
-        this.on("Finish", this.onFinish.bind(this))
 
         game.requestModel(this.fModel);
         game.requestModel(this.mModel);
+
+        alt.on("connectionComplete", this.setStats.bind(this));
+        EventController.onServer(ClientEvents.Charcreator.Apply, this.onApply.bind(this));
     }
 
-    onFinish() {
-        EventHandler.emitServer("SavePlayerCharacter", this.tempData.firstName, this.tempData.lastname, this.tempData.birthday, JSON.stringify({
+    onApply(jsonString: string) {
+        this.onUpdate(JSON.parse(jsonString));
+    }
+
+    sendToServer() {
+        EventController.emitServer(ServerEvents.Charcreator.Save, this.tempData.firstName, this.tempData.lastname, this.tempData.birthday, JSON.stringify({
             choiseMale: this.tempData.choiseMale,
             choiseFemale: this.tempData.choiseFemale,
            
@@ -50,17 +51,12 @@ class CharCreator extends View {
         }));
     }
 
-    onApply(jsonString: string) {
-        const jsonData = JSON.parse(jsonString);
-        this.onUpdate(jsonData);
-    }
-
     onUpdate(data: any) {
         this.tempData = data;
 
         const modelNeeded = this.tempData.sex === 0 ? this.fModel : this.mModel;
         if(this.localPlayer.model !== modelNeeded) {
-            EventHandler.emitServer("setModel", modelNeeded);
+            EventController.emitServer(ServerEvents.Charcreator.SetModel, modelNeeded);
         }
 
         game.clearPedDecorations(this.localPlayer.scriptID);
@@ -107,32 +103,15 @@ class CharCreator extends View {
         game.setPedComponentVariation(this.localPlayer.scriptID, 11, this.tempData.gender ? 15 : 91, 0, 0);
     }
 
-    onOpen() {
-        super.onOpen();
-
-        alt.setTimeout(() => {
-            if(this.camera != 0) {
-                game.destroyCam(this.camera, false);
-                game.renderScriptCams(false, false, 0, false, false, 0);
-            }
-    
-            const offset = game.getOffsetFromEntityInWorldCoords(this.localPlayer.scriptID, 0, 3, 1);
-            this.camera = game.createCamWithParams("DEFAULT_SCRIPTED_CAMERA", offset.x, offset.y, offset.z, 0, 0, 0, 40, true, 2);
-    
-            game.setCamActive(this.camera, true);
-            game.pointCamAtCoord(this.camera, this.localPlayer.pos.x, this.localPlayer.pos.y, this.localPlayer.pos.z);
-            game.renderScriptCams(true, true, 500, false, false, 0);
-        }, 250);
-    }
-
-    onClose() {
-        super.onClose();
-        
-        if(this.camera != 0) {
-            game.destroyCam(this.camera, false);
-            game.renderScriptCams(false, false, 0, false, false, 0);
-        }
+    setStats() {
+        alt.setStat(alt.StatName.Stamina, 100);
+        alt.setStat(alt.StatName.Strength, 100);
+        alt.setStat(alt.StatName.LungCapacity, 100);
+        alt.setStat(alt.StatName.Wheelie, 100);
+        alt.setStat(alt.StatName.Flying, 100);
+        alt.setStat(alt.StatName.Shooting, 100);
+        alt.setStat(alt.StatName.Stealth, 100);
     }
 }
 
-export default new CharCreator();
+export default new CharacterController();
