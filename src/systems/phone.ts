@@ -3,7 +3,8 @@ import game from 'natives';
 
 import KeyHandler from '../handlers/KeyHandler';
 import View from '../classes/View';
-import controls from './controls';
+import WebView from '../classes/Webview';
+import EventHandler from '../handlers/EventHandler';
 
 const animations = {
     "cellphone@": {
@@ -57,7 +58,13 @@ class PhoneView extends View {
         this.lastDict = "";
         this.lastAnim = "";
 
-        new KeyHandler("F1", 112, this.onOpen.bind(this));
+        new KeyHandler("F1", 112, () =>  { 
+            EventHandler.emitServer("RequestOpenPhone"); 
+
+            return true; 
+        });
+
+        EventHandler.onServer("ResponseOpenPhone", this.openPhone.bind(this));
     }
 
     loadAnimation(dict: string) {
@@ -127,8 +134,8 @@ class PhoneView extends View {
         });
     }
 
-    onOpen() {
-        if(this.open) return this.onClose();
+    openPhone() {
+        if(this.open) return this.closePhone();
         this.open = true;
 
         if(this.phoneObject) game.deleteObject(this.phoneObject);
@@ -138,16 +145,12 @@ class PhoneView extends View {
             const bone = game.getPedBoneIndex(alt.Player.local.scriptID, 28422);
             game.attachEntityToEntity(this.phoneObject, alt.Player.local.scriptID, bone, 0, 0, 0, 0, 0, 0, true, true, false, false, 2, true);
 
-            this.webview.emit("showWindow", "Phone", {});
-
-            controls.toggleGameControls(false);
-            controls.showCursor(true);
         }), 200));
-
+        
         return true;
     }
 
-    onClose() {
+    closePhone() {
         this.open = false;
         
         if(this.phoneObject) {
@@ -155,10 +158,7 @@ class PhoneView extends View {
             game.stopAnimTask(alt.Player.local.scriptID, this.lastDict, this.lastAnim, 1);
         }
 
-        controls.toggleGameControls(true);
-        controls.showCursor(false);
-
-        this.webview.emit("closeWindow", "Phone");
+        WebView.closeWindow("Phone");
         return true;
     }
 }
