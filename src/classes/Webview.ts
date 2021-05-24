@@ -17,6 +17,7 @@ class Webview {
         this.webView.on("toggleGameControls", state => controls.toggleGameControls(state));
 
         this.webView.on("triggerServerEvent", (eventName, ...args) => EventHandler.emitServer(eventName, ...args));
+        this.webView.on("componentEvent", (eventName, ...args) => this.webView.emit(eventName, ...args));
     }
 
     onLoad() {

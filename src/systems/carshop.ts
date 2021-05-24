@@ -89,7 +89,7 @@ class CarShopView extends View {
         
         if (this.previewCam != 0) {
             game.destroyCam(this.previewCam, false);
-            game.renderScriptCams(false, true, 250, false, false, 0);
+            game.renderScriptCams(false, true, 0, false, false, 0);
 
             this.previewCam = 0;
         }
