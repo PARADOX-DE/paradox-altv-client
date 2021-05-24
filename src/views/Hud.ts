@@ -11,7 +11,8 @@ class HudView extends Window {
 
     onOpen() {
         this.emit("gotMinimapWidth", HUDController.getMinimapWidth());
-        // this.emit("gotFormat", game.getIsWidescreen()); -- deprecated
+        // TODO: remove gotFormat and replace it in every vue component
+        this.emit("gotFormat", game.getIsWidescreen());
     }
 
     onTick() {
