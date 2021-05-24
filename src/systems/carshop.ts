@@ -46,6 +46,9 @@ class CarShopView extends View {
     }
 
     async PreviewVehicle(vehicleModel: string) {
+        if(this.savedPosition.x == 0 && this.savedPosition.y == 0 && this.savedPosition.z == 0)
+            this.savedPosition = alt.Player.local.pos;
+
         await this.waitForModel(vehicleModel);
         alt.log("PreviewVehicle");
 
@@ -63,7 +66,6 @@ class CarShopView extends View {
             this.previewVehicle = 0;
         }
         
-        this.savedPosition = alt.Player.local.pos;
         game.setEntityCoordsNoOffset(alt.Player.local.scriptID, -863.24835, -10.08791, 40.602905, false, false, false);
 
         this.previewCam = game.createCamWithParams('DEFAULT_SCRIPTED_CAMERA', -873.95605, -17.28791, 43.3385, 0, 0, 0, 40, true, 0);
@@ -83,7 +85,8 @@ class CarShopView extends View {
     
     LeaveCarShop() {
         game.setEntityCoordsNoOffset(alt.Player.local.scriptID, this.savedPosition.x, this.savedPosition.y, this.savedPosition.z, false, false, false);
-
+        this.savedPosition = new alt.Vector3(0,0,0);
+        
         if (this.previewCam != 0) {
             game.destroyCam(this.previewCam, false);
             game.renderScriptCams(false, true, 250, false, false, 0);
