@@ -19,6 +19,7 @@ import "./systems/charcreator";
 import "./systems/garage";
 import "./systems/hud";
 import "./systems/bank";
+import "./systems/vehicle";
 import "./systems/jailCutscene";
 
 import "./systems/hud/chat";
