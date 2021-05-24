@@ -32,6 +32,7 @@ import "./systems/hud/voice_section";
 import "./systems/phone";
 import "./systems/phone/team/TeamLeaderApp";
 import "./systems/confirmation";
+import "./systems/carshop";
 
 import "./systems/clothing";
 import "./systems/blips";
