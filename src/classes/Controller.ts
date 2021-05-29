@@ -4,7 +4,6 @@ const controllers: Controller[] = [];
 
 export default class Controller {
     name: string;
-    onTick?(): () => void;
 
     constructor(name: string) {
         this.name = name;
@@ -12,7 +11,11 @@ export default class Controller {
         if(this.all.some(x => x.name == name)) alt.log(`[PARADOX] Controller >> ${name} already exists!`);
         
         alt.log(`[PARADOX] Controller >> ${name} loaded...`);
-        if(this.onTick) alt.everyTick(this.onTick.bind(this));
+        alt.everyTick(this.onTick.bind(this));
+
+        alt.on("keydown", key => this.onKey(key, true));
+        alt.on("keyup", key => this.onKey(key, false));
+        alt.on("consoleCommand", (command: string, ...args: string[]) => this.onConsoleCommand(command, ...args));
 
         controllers.push(this);
     }
@@ -24,4 +27,8 @@ export default class Controller {
     getByName(name: string) {
         return this.all.find(x => x.name == name);
     }
+
+    onTick() {}
+    onConsoleCommand(command: string, ...args: string[]) {}
+    onKey(key: number, down: boolean) {}
 }

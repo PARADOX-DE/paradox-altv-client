@@ -5,6 +5,7 @@ import './controllers/PlayerControlsController';
 import './controllers/HUDController';
 import './controllers/CharacterController';
 import './controllers/ClothingController';
+import './controllers/AdminController';
 
 import "./views/Login";
 import "./views/Hud";
