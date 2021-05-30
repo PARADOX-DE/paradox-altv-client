@@ -7,7 +7,7 @@ class Webview {
     webView: alt.WebView;
 
     constructor() {
-        this.webView = new alt.WebView("http://resource/ui/index.html");
+        this.webView = new alt.WebView("http://localhost:8080");
         this.webView.on("load", this.onLoad.bind(this));
 
         EventHandler.onServer("Webview::ShowWindow", this.showWindow.bind(this));
