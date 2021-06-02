@@ -32,11 +32,11 @@ class SpeedometerView extends View {
                 "Update",
                 true,
                 speed,
+                fuel,
+                maxFuel,
                 game.getIsVehicleEngineRunning(vehicle.scriptID),
                 game.getVehicleDoorLockStatus(vehicle.scriptID) != 1,
                 game.getVehicleLightsState(vehicle.scriptID)[0] && game.getVehicleLightsState(vehicle.scriptID)[1],
-                fuel,
-                maxFuel
             );
         }
     }
