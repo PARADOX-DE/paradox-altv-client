@@ -2,14 +2,13 @@ import alt from 'alt-client';
 import Window from '../../classes/Window';
 import EventController from '../../controllers/EventController';
 import PlayerControlsController from '../../controllers/PlayerControlsController';
-import { ClientEvents, ServerEvents } from '../../data/events';
 
 class ChatWindow extends Window {
     constructor() {
         super("Chat");
 
         this.on("Send", this.onMessage.bind(this));
-        EventController.onServer(ClientEvents.Chat.Receive, this.receiveMessage.bind(this));
+        EventController.onServer("Chat::Receive", this.receiveMessage.bind(this));
     }
 
     onKey(key: number, down: false, isOpen: boolean) {
@@ -29,7 +28,7 @@ class ChatWindow extends Window {
         PlayerControlsController.toggleGameControls(true);
         PlayerControlsController.showCursor(false);
 
-        EventController.emitServer(ServerEvents.Chat.Message, message);
+        EventController.emitServer("chat:message", message);
     }
 
     receiveMessage(title: string, message: string, error: boolean) {

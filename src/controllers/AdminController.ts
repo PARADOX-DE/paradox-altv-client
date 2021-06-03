@@ -9,6 +9,7 @@ class AdminController extends Controller {
     private localPlayer: alt.Player;
     private aduty: boolean;
     private noclip: boolean;
+    private lastPressedKey: number;
 
     constructor() {
         super("Admin");
@@ -16,6 +17,7 @@ class AdminController extends Controller {
         this.localPlayer = alt.Player.local;
         this.aduty = true;
         this.noclip = false;
+        this.lastPressedKey = 0;
         
         EventController.onServer("Admin::Toggle", this.toggle.bind(this));
         EventController.onServer("Admin::Noclip", this.toggleNoclip.bind(this));
@@ -118,9 +120,52 @@ class AdminController extends Controller {
         game.endTextCommandDisplayText(x, y, 0);
         game.clearDrawOrigin();
     }
+
+    DrawText2(text: string, x: number, y: number, scale: number, fontType: number, r: number, g: number, b: number, a: number = 255, useOutline = true, useDropShadow = true) {
+        game.beginTextCommandDisplayText('STRING');
+        game.setTextFont(fontType);
+        game.setTextCentre(false);
+        game.setTextScale(1, scale);
+        game.setTextProportional(true);
+        game.setTextColour(r, g, b, a);
+
+        // tslint:disable-next-line
+        const textMatched = text.match(/.{1,99}/g);
+        if(textMatched) textMatched.forEach(textBlock => game.addTextComponentSubstringPlayerName(textBlock));
+    
+        if (useOutline) game.setTextOutline();
+        if (useDropShadow) game.setTextDropShadow();
+    
+        game.endTextCommandDisplayText(x, y, 0);
+        game.clearDrawOrigin();
+    }
     
     onTick() {
         if(!this.aduty) return;
+
+        if(alt.isInDebug()) {
+            const localPlayer = alt.Player.local;
+            const data = {
+                pos: localPlayer.pos,
+                rot: game.getEntityHeading(localPlayer.scriptID).toFixed(2),
+                lastPressedKey: `${this.lastPressedKey} - ${String.fromCharCode(this.lastPressedKey)}`
+            };
+
+            if(Object.keys(data).length) {
+                Object.keys(data).forEach((k, v, arr) => {
+                    this.DrawText2(
+                        // @ts-ignore
+                        `${k}: ${(typeof data[k] === 'object') ? JSON.stringify(data[k]) : data[k]}`,
+                        0.02,
+                        (0.5 + (v / 80)),
+                        0.2,
+                        0,
+                        255, 255, 255
+                    );
+                });
+            }
+        }
+
         if(this.noclip) {
             const keys = {
                 FORWARD: 32,
@@ -167,6 +212,9 @@ class AdminController extends Controller {
     }
 
     onKey(key: number, down: boolean) {
+        if(down == true && key != "W".charCodeAt(0) && key != "A".charCodeAt(0) && key != "S".charCodeAt(0) && key != "D".charCodeAt(0) && key != "SPACE".charCodeAt(0))
+            this.lastPressedKey = key;
+
         if(key == 113 && down == true) return this.toggle();
         else if(key == 114 && down == true) return this.toggleNoclip();
     }

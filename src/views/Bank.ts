@@ -3,15 +3,20 @@ import Window from '../classes/Window';
 import EventController from '../controllers/EventController';
 import PlayerControlsController from '../controllers/PlayerControlsController';
 
-class LoginView extends Window {
+class BankView extends Window {
     constructor() {
-        super("Login");
+        super("Bank");
 
-        this.on("Auth", this.onAuth.bind(this));
+        this.on("Deposit", this.onDeposit.bind(this));
+        this.on("Withdraw", this.onWithdraw.bind(this));
     }
 
-    onAuth(username: string, password: string) {
-        EventController.emitServer("RequestLoginResponse", username, password);
+    onDeposit(value: number) {
+        EventController.emitServer("DepositMoney", value);
+    }
+
+    onWithdraw(value: number) {
+        EventController.emitServer("WithdrawMoney", value);
     }
 
     onOpen() {
@@ -25,4 +30,4 @@ class LoginView extends Window {
     }
 }
 
-export default new LoginView();
+export default new BankView();

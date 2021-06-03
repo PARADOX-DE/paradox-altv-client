@@ -1,5 +1,5 @@
 import alt from 'alt-client';
-import { ClientEvents, ServerEvents } from '../data/events';
+import EventController from '../controllers/EventController';
 
 class WebView {
     public webView: alt.WebView;
@@ -8,11 +8,11 @@ class WebView {
         this.webView = new alt.WebView("http://localhost:8080/");
         this.webView.on("load", () => {
             this.webView.focus();
-            alt.emitServer(ServerEvents.Ready);
+            EventController.emitServer("PlayerReady");
         });
 
-        alt.onServer(ClientEvents.WebView.showWindow, this.showWindow.bind(this));
-        alt.onServer(ClientEvents.WebView.closeWindow, this.closeWindow.bind(this));
+        EventController.onServer("Webview::ShowWindow", this.showWindow.bind(this));
+        EventController.onServer("Webview::CloseWindow", this.closeWindow.bind(this));
     }
 
     showWindow(name: string, args: {}) {

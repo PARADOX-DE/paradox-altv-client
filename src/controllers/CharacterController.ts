@@ -3,7 +3,6 @@ import game from 'natives';
 
 import Controller from '../classes/Controller';
 import EventController from './EventController';
-import { ClientEvents, ServerEvents } from '../data/events';
 
 class CharacterController extends Controller {
     private localPlayer: alt.Player;
@@ -20,7 +19,7 @@ class CharacterController extends Controller {
         game.requestModel(this.mModel);
 
         alt.on("connectionComplete", this.setStats.bind(this));
-        EventController.onServer(ClientEvents.Charcreator.Apply, this.onApply.bind(this));
+        EventController.onServer("ApplyPlayerCharacter", this.onApply.bind(this));
     }
 
     onApply(jsonString: string) {
@@ -28,7 +27,7 @@ class CharacterController extends Controller {
     }
 
     sendToServer() {
-        EventController.emitServer(ServerEvents.Charcreator.Save, this.tempData.firstName, this.tempData.lastname, this.tempData.birthday, JSON.stringify({
+        EventController.emitServer("SavePlayerCharacter", this.tempData.firstName, this.tempData.lastname, this.tempData.birthday, JSON.stringify({
             choiseMale: this.tempData.choiseMale,
             choiseFemale: this.tempData.choiseFemale,
            
@@ -55,9 +54,7 @@ class CharacterController extends Controller {
         this.tempData = data;
 
         const modelNeeded = this.tempData.sex === 0 ? this.fModel : this.mModel;
-        if(this.localPlayer.model !== modelNeeded) {
-            EventController.emitServer(ServerEvents.Charcreator.SetModel, modelNeeded);
-        }
+        if(this.localPlayer.model !== modelNeeded) EventController.emitServer("setModel", modelNeeded);
 
         game.clearPedDecorations(this.localPlayer.scriptID);
         game.setPedHeadBlendData(this.localPlayer.scriptID, 0, 0, 0, 0, 0, 0, 0, 0, 0, false);

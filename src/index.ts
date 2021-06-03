@@ -6,11 +6,14 @@ import './controllers/HUDController';
 import './controllers/CharacterController';
 import './controllers/ClothingController';
 import './controllers/AdminController';
+import EventController from './controllers/EventController';
 
 import "./views/Login";
 import "./views/Hud";
 import './views/Progressbar';
 import './views/Charcreator';
+import './views/Garage';
+import './views/Bank';
 
 import './views/hud/chat';
 import './views/hud/weaponinfo';
@@ -27,6 +30,8 @@ alt.on("connectionComplete", () => {
     alt.setStat(alt.StatName.Flying, 100);
     alt.setStat(alt.StatName.Shooting, 100);
     alt.setStat(alt.StatName.Stealth, 100);
+
+    game.replaceHudColourWithRgba(143, 36, 177, 221, 255);
 });
 
 alt.everyTick(() => {
@@ -39,3 +44,8 @@ alt.everyTick(() => {
 alt.on("gameEntityCreate", entity => {
     if(entity instanceof alt.Player) game.setPedSuffersCriticalHits(entity.scriptID, false);
 });
+
+alt.on("keydown", key => {
+    if(key == 69) return EventController.emitServer("Pressed_E");
+    else if(key == 73) return EventController.emitServer("Pressed_I");
+})

@@ -1,7 +1,6 @@
 import alt from 'alt-client';
 import game from 'natives';
 
-import { ServerEvents } from '../data/events';
 import Controller from '../classes/Controller';
 import EventController from './EventController';
 
@@ -9,8 +8,8 @@ class ClothingController extends Controller {
     constructor() {
         super("Clothing");
         
-        EventController.onServer(ServerEvents.Clothing.SetClothes, this.SetClothes.bind(this));
-        EventController.onServer(ServerEvents.Clothing.SetProp, this.SetProp.bind(this));
+        EventController.onServer("SetClothes", this.SetClothes.bind(this));
+        EventController.onServer("SetProp", this.SetProp.bind(this));
     }
     
     SetClothes(component: number, drawable: number, texture: number){

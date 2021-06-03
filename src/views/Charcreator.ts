@@ -3,7 +3,6 @@ import game from 'natives';
 
 import Window from '../classes/Window';
 import CharacterController from '../controllers/CharacterController';
-import HUDController from '../controllers/HUDController';
 
 class CharcreatorWindow extends Window {
     private camera: number;

@@ -3,15 +3,20 @@ import Window from '../classes/Window';
 import EventController from '../controllers/EventController';
 import PlayerControlsController from '../controllers/PlayerControlsController';
 
-class LoginView extends Window {
+class GarageView extends Window {
     constructor() {
-        super("Login");
+        super("Garage");
 
-        this.on("Auth", this.onAuth.bind(this));
+        this.on("Park", this.onPark.bind(this));
+        this.on("Take", this.onTake.bind(this));
     }
 
-    onAuth(username: string, password: string) {
-        EventController.emitServer("RequestLoginResponse", username, password);
+    onPark(carId: number) {
+        EventController.emitServer("ParkVehicle", carId);
+    }
+
+    onTake(carId: number, garageId: number) {
+        EventController.emitServer("GarageParkOut", carId, garageId);
     }
 
     onOpen() {
@@ -25,4 +30,4 @@ class LoginView extends Window {
     }
 }
 
-export default new LoginView();
+export default new GarageView();
