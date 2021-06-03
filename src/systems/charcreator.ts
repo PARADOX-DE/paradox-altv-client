@@ -58,9 +58,9 @@ class CharCreator extends View {
     onUpdate(data: any) {
         this.tempData = data;
 
-        const modelNeeded = this.tempData.sex === 0 ? this.fModel : this.mModel;
+        const modelNeeded = this.tempData.gender === 0 ? this.mModel : this.fModel;
         if(this.localPlayer.model !== modelNeeded) {
-            EventHandler.emitServer("setModel", modelNeeded);
+            EventHandler.emitServer("SetModel", modelNeeded);
         }
 
         game.clearPedDecorations(this.localPlayer.scriptID);

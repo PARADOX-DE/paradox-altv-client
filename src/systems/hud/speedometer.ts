@@ -21,14 +21,22 @@ class SpeedometerView extends View {
         if(localPlayer.vehicle) {
             const vehicle = localPlayer.vehicle;
             const speed = (vehicle.speed * 3.6).toFixed(0);
+            
+            var fuel = 0;
+            if(vehicle.hasStreamSyncedMeta("Fuel"))
+                fuel = vehicle.getStreamSyncedMeta("Fuel");
+
+            var maxFuel = 0;
 
             this.emit(
                 "Update",
                 true,
                 speed,
+                fuel,
+                maxFuel,
                 game.getIsVehicleEngineRunning(vehicle.scriptID),
                 game.getVehicleDoorLockStatus(vehicle.scriptID) != 1,
-                game.getVehicleLightsState(vehicle.scriptID)[0] && game.getVehicleLightsState(vehicle.scriptID)[1]
+                game.getVehicleLightsState(vehicle.scriptID)[0] && game.getVehicleLightsState(vehicle.scriptID)[1],
             );
         }
     }

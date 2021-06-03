@@ -105,21 +105,25 @@ class XMenuView extends View {
 					title: 'Kofferraum öffnen/schließen',
                     desc: "Öffne/Schließe den Kofferraum des Fahrzeuges",
                     icon: 'vehicle/trunk',
+                    event: 'OpenVehicleTrunk'
 				},
 				{
 					title: 'Motorhaube öffnen/schließen',
                     desc: "Öffne/Schließe die Motorhaube des Fahrzeuges",
-                    icon: 'vehicle/hood'
+                    icon: 'vehicle/hood',
+                    event: 'OpenVehicleHood'
 				},
 				{
 					title: 'Auf/Zuschließen',
                     desc: "Öffne/Schließe das Fahrzeug",
-                    icon: 'vehicle/key'
+                    icon: 'vehicle/key',
+                    event: 'LockVehicle'
 				},
 				{
 					title: 'Starten/Stoppen',
                     desc: "Starte/Stoppe den Fahrzeug Motor",
-                    icon: 'vehicle/engine'
+                    icon: 'vehicle/engine',
+                    event: 'StartVehicleEngine'
 				}];
 
                 game.setVehicleLights(raycast[4], 2);
@@ -129,14 +133,15 @@ class XMenuView extends View {
 
         const [_, x, y] = game.getActiveScreenResolution();
 
-        controls.toggleGameControls(false);
-        controls.showCursor(true);
+        if(items != []){
+            controls.toggleGameControls(false);
+            controls.showCursor(true);
 
-        alt.setCursorPos({ x: x / 2, y: y / 2 });
+            alt.setCursorPos({ x: x / 2, y: (y / 2) - 5});
 
-        this.webview.focus();
-        this.emit("Open", items);
-
+            this.webview.focus();
+            this.emit("Open", items);
+        }
         return true;
     }
 
@@ -152,8 +157,8 @@ class XMenuView extends View {
         return true;
     }
 
-    onInteract(id: number) {
-        if(this.targetId) EventHandler.emitServer("XMenu::Interact", id, this.targetId);
+    onInteract(event: string) {
+        if(this.targetId) EventHandler.emitServer(event, alt.Entity.getByScriptID(this.targetId));
     }
 }
 

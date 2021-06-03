@@ -51,6 +51,7 @@ alt.on("keyup", key => {
 
 new KeyHandler("E", 69, undefined, true);
 new KeyHandler("Y", 89, undefined, true);
+new KeyHandler("I", 73, undefined, true);
 
 new KeyHandler("F5", 116, () => {
     Webview.webView.focus();

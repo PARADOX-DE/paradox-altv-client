@@ -9,6 +9,19 @@ class Animations  {
     constructor() {
         EventHandler.onServer("PlayAnimation", this.playAnimation.bind(this));
         EventHandler.onServer("StopAnimation", this.stopAnimation.bind(this));
+        EventHandler.onServer("StartEffect", (name, duration, looped) => {
+            alt.log("StartEffect Event")
+            game.animpostfxStopAll()
+            if(looped == 1)
+            game.animpostfxPlay(name, duration, true)
+            else
+            game.animpostfxPlay(name, duration, false)
+        });
+        
+        EventHandler.onServer("StopEffect", () => {
+            alt.log("StopEffect Event")
+            game.animpostfxStopAll()
+        });
     }
 
     playAnimation(dict: string, name: string, flag: number = 9, duration: number = -1) {

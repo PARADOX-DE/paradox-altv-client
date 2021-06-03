@@ -19,6 +19,7 @@ import "./systems/charcreator";
 import "./systems/garage";
 import "./systems/hud";
 import "./systems/bank";
+import "./systems/vehicle";
 import "./systems/jailCutscene";
 
 import "./systems/hud/chat";
@@ -31,6 +32,7 @@ import "./systems/hud/voice_section";
 import "./systems/phone";
 import "./systems/phone/team/TeamLeaderApp";
 import "./systems/confirmation";
+import "./systems/carshop";
 
 import "./systems/clothing";
 import "./systems/blips";
