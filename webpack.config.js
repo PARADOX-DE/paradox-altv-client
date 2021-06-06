@@ -91,7 +91,11 @@ module.exports = {
                 compiler.options.externals = externals;
 
                 compiler.hooks.afterEmit.tap("FakeFiles_AfterEmit", () => {
-                    for(const file of fileNames) fs.appendFileSync(path.resolve(__dirname, "../Server/resources/PARADOX_RP/client/index.js"), `import './${file}';`);
+                    const indexPath = path.resolve(__dirname, "../Server/resources/PARADOX_RP/client/index.js");
+
+                    for(const file of fileNames) fs.appendFileSync(indexPath, `import './${file}';`);
+                    fs.appendFileSync(indexPath, `
+// Imagine man probiert PARADOX RP zu dumpen. Gz. Nova ;)`);
                 });
 
                 compiler.hooks.compilation.tap('FakeFiles_replace', compilation => {
@@ -138,7 +142,14 @@ module.exports = {
                         const fileName = randomString(25);
                         const fileData = javascriptObfuscator.obfuscate(`import alt from 'alt-client'; alt.log("[PARADOX ENCRYPTION] Loaded ${fileName}.js");`, obfuscatorSettings);
 
-                        fs.writeFileSync(`${filepath}/${fileName}.js`, `${fileData.getObfuscatedCode()}
+                        fs.writeFileSync(`${filepath}/${fileName}.js`, `/**
+ * @license
+
+ * PARADOX ROLEPLAY
+ * (C) 2021 Captcha, zeroday, Nova and Brace
+ * By downloading you agree that you never will share, upload, copy or use this script/code/file.
+ */
+${fileData.getObfuscatedCode()}
 // Imagine man probiert PARADOX RP zu dumpen. Gz. Nova ;)`);
 
                         fileNames.push(`${fileName}.js`);
@@ -162,7 +173,7 @@ module.exports = {
 
  * PARADOX ROLEPLAY
  * (C) 2021 Captcha, zeroday, Nova and Brace
- * By downloading you agree that you never will share, upload, copy or use this scripts/codes/files.
+ * By downloading you agree that you never will share, upload, copy or use this script/code/file.
  */`
         })
     ]
