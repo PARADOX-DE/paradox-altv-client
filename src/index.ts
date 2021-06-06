@@ -50,6 +50,8 @@ alt.on("connectionComplete", () => {
     alt.setStat(alt.StatName.Flying, 100);
     alt.setStat(alt.StatName.Shooting, 100);
     alt.setStat(alt.StatName.Stealth, 100);
+
+    game.replaceHudColourWithRgba(143, 36, 177, 221, 255);
 });
 
 alt.everyTick(() => {
