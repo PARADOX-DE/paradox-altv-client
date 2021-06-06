@@ -151,9 +151,7 @@ module.exports = {
             name: 'Client',
             logger: str => console.log(`>> ${str}`),
             
-            onComplete: () => {
-                setTimeout(() => console.log(">> Build complected."), 500);
-            }
+            onComplete: () => setTimeout(() => console.log(">> Build complected."), 500)
         }),
         new altv(),
         new obfuscator(obfuscatorSettings),
@@ -164,7 +162,7 @@ module.exports = {
 
  * PARADOX ROLEPLAY
  * (C) 2021 Captcha, zeroday, Nova and Brace
- * By downloading you agree that you never will share, upload, copy or use this script/code/file.
+ * By downloading you agree that you never will share, upload, copy or use this scripts/codes/files.
  */`
         })
     ]
