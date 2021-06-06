@@ -56,4 +56,8 @@ export default class Window {
     onTick() {}
     onConsoleCommand(command: string, ...args: string[]) {}
     onKey(key: number, down: boolean, isOpen: boolean) {}
+
+    close() {
+        WebView.closeWindow(this.name);
+    }
 }

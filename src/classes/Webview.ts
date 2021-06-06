@@ -11,8 +11,13 @@ class WebView {
             EventController.emitServer("PlayerReady");
         });
 
+        EventController.onServer("ViewCallback", (componentName: string, eventName: string, ...args: any[]) => this.webView.emit(`${componentName}::${eventName}`, ...args));
+
         EventController.onServer("Webview::ShowWindow", this.showWindow.bind(this));
         EventController.onServer("Webview::CloseWindow", this.closeWindow.bind(this));
+
+        this.webView.on("triggerServerEvent", (eventName, ...args) => EventController.emitServer(eventName, ...args));
+        this.webView.on("componentEvent", (eventName, ...args) => this.webView.emit(eventName, ...args));
     }
 
     showWindow(name: string, args: {}) {

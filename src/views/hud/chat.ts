@@ -3,7 +3,7 @@ import Window from '../../classes/Window';
 import EventController from '../../controllers/EventController';
 import PlayerControlsController from '../../controllers/PlayerControlsController';
 
-class ChatWindow extends Window {
+class ChatView extends Window {
     constructor() {
         super("Chat");
 
@@ -36,4 +36,4 @@ class ChatWindow extends Window {
     }
 }
 
-export default new ChatWindow();
+export default new ChatView();

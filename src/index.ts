@@ -6,7 +6,10 @@ import './controllers/HUDController';
 import './controllers/CharacterController';
 import './controllers/ClothingController';
 import './controllers/AdminController';
+import './controllers/BlipController';
+
 import EventController from './controllers/EventController';
+import './util';
 
 import "./views/Login";
 import "./views/Hud";
@@ -18,6 +21,7 @@ import './views/Bank';
 import './views/hud/chat';
 import './views/hud/weaponinfo';
 import './views/hud/voice';
+import './views/hud/xmenu';
 
 import alt from 'alt-client';
 import game from 'natives';
@@ -32,6 +36,7 @@ alt.on("connectionComplete", () => {
     alt.setStat(alt.StatName.Stealth, 100);
 
     game.replaceHudColourWithRgba(143, 36, 177, 221, 255);
+    alt.log("[PARADOX ENCRYPTION] Loaded index.js");
 });
 
 alt.everyTick(() => {
@@ -41,11 +46,7 @@ alt.everyTick(() => {
     }
 });
 
-alt.on("gameEntityCreate", entity => {
-    if(entity instanceof alt.Player) game.setPedSuffersCriticalHits(entity.scriptID, false);
-});
-
 alt.on("keydown", key => {
     if(key == 69) return EventController.emitServer("Pressed_E");
     else if(key == 73) return EventController.emitServer("Pressed_I");
-})
+});

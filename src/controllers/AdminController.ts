@@ -4,6 +4,7 @@ import game from 'natives';
 import Controller from '../classes/Controller';
 import EventController from './EventController';
 import HudView from '../views/Hud';
+import Utils from '../util';
 
 class AdminController extends Controller {
     private localPlayer: alt.Player;
@@ -146,7 +147,7 @@ class AdminController extends Controller {
         if(alt.isInDebug()) {
             const localPlayer = alt.Player.local;
             const data = {
-                pos: localPlayer.pos,
+                pos: { x: localPlayer.pos.x.toFixed(2), y: localPlayer.pos.y.toFixed(2), z: localPlayer.pos.z.toFixed(2) },
                 rot: game.getEntityHeading(localPlayer.scriptID).toFixed(2),
                 lastPressedKey: `${this.lastPressedKey} - ${String.fromCharCode(this.lastPressedKey)}`
             };
@@ -217,6 +218,19 @@ class AdminController extends Controller {
 
         if(key == 113 && down == true) return this.toggle();
         else if(key == 114 && down == true) return this.toggleNoclip();
+        else if(key == 115 && down) return this.tpToWaypoint();
+    }
+
+    tpToWaypoint() {
+        if(!this.aduty) return;
+        if(!game.isWaypointActive()) return alt.logError("[ADMIN][tpToWaypoint] no waypoint found!");
+
+        const waypoint = game.getFirstBlipInfoId(8);
+        const coords = game.getBlipInfoIdCoord(waypoint);
+
+        Utils.getGroundZ(coords).then(groundZ => {
+            game.setEntityCoords(this.localPlayer.scriptID, coords.x, coords.y, groundZ, true, false, false, true);
+        });
     }
 }
 

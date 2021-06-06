@@ -1,7 +1,7 @@
 import Window from '../../classes/Window';
 import EventController from '../../controllers/EventController';
 
-class VoiceWindow extends Window {
+class VoiceView extends Window {
     constructor() {
         super("VoiceSection");
 
@@ -17,4 +17,4 @@ class VoiceWindow extends Window {
     }
 }
 
-export default new VoiceWindow();
+export default new VoiceView();
