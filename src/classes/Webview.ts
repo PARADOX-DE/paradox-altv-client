@@ -1,4 +1,6 @@
 import alt from 'alt-client';
+import game from 'natives';
+
 import EventHandler from '../handlers/EventHandler';
 import controls from '../systems/controls';
 import View from './View';
@@ -33,6 +35,8 @@ class Webview {
     }
 
     showWindow(name: string, args: {}) {
+        game.playSoundFrontend(-1, '5_SEC_WARNING', 'HUD_MINI_GAME_SOUNDSET', true);
+
         this.webView.emit("showWindow", name, args);
     }
 
