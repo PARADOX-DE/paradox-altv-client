@@ -4,7 +4,7 @@ const altv = require('altv-webpack-plugin');
 const javascriptObfuscator = require("javascript-obfuscator");
 const obfuscator = require('webpack-obfuscator');
 const WebpackMessages = require('webpack-messages');
-const glob = require('glob');
+const glob = require('glob-promise');
 const fs = require("fs");
 const { ConcatSource } = require('webpack-sources');
 
@@ -39,6 +39,37 @@ const obfuscatorSettings = {
     unicodeEscapeSequence: false
 };
 
+const noticeInEveryFile = `/*                                              
+ * ,ooooooooooooooooolc;.                
+ * .:OWMMMMMMMMMMMMMMMMWXk:.             
+ *   .,;;;;;;;;;;;;;;:lkNMWO'            
+ *     ...............  ;0MMO.           
+ *    ;0XXXXXXXXXXXXXO'  cWMN:           
+ *   .kMMNOOOOOOOOOOOo.  lWMX;           
+ *   cNMWl             .lXMWd.           
+ *  .OMMX; .;lllllllloxKWMXo.            
+ *  .cKWWKolXMMMMMMMMMWXOl'              
+ *    .l0WWWMMXd:::::;,.                 
+ *      .c0WMWd.                         
+ *        .l0k'                          
+ *          ..                           
+ *                                       
+ * PARADOX TO THE MOON => STUPID SKID
+ */`;
+
+ function randomString(length) {
+    var result           = [];
+    var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    var charactersLength = characters.length;
+
+    for ( var i = 0; i < length; i++ ) {
+        result.push(characters.charAt(Math.floor(Math.random() * 
+        charactersLength)));
+    }
+
+    return result.join('');
+}
+
 module.exports = {
 	mode: "production",
     entry: "./src/index.ts",
@@ -68,93 +99,31 @@ module.exports = {
              * @param { webpack.Compiler } compiler 
              */
             apply: (compiler) => {
-                const fileNames = [];
-                const fileNames2 = [];
-                let importedFakeFiles = 0;
+                compiler.hooks.afterEmit.tap("FakeFiles_AfterEmit", async () => {
+                    const clientFilesPath = path.resolve(__dirname, `../Server/resources/PARADOX_RP/client/`);
+                    const indexFilePath = path.resolve(__dirname, "../Server/resources/PARADOX_RP/client/index.js");
 
-                /**
-                 * 
-                 * @param { webpack.Chunk } chunk 
-                 * @param { string } moduleName 
-                 * @returns 
-                 */
-                function doesChunkImport(chunk, moduleName) {
-                    for (const module of chunk._modules) {
-                        if(typeof module.userRequest == "string" && module.userRequest.includes(moduleName)) return true;
-                        else if (module.userRequest === moduleName) return true;
-                    }
-                
-                    return false;
-                }
-
-                let externals = [];
-                compiler.options.externals = externals;
-
-                compiler.hooks.afterEmit.tap("FakeFiles_AfterEmit", () => {
-                    const indexPath = path.resolve(__dirname, "../Server/resources/PARADOX_RP/client/index.js");
-
-                    for(const file of fileNames) fs.appendFileSync(indexPath, `import './${file}';`);
-                    fs.appendFileSync(indexPath, `
-// Imagine man probiert PARADOX RP zu dumpen. Gz. Nova ;)`);
-                });
-
-                compiler.hooks.compilation.tap('FakeFiles_replace', compilation => {
-                    compilation.hooks.optimizeChunkAssets.tap('FakeFiles', chunks => {
-                        for (const chunk of chunks) {
-                            for(const external of externals) {
-                                if(doesChunkImport(chunk, external)) {
-                                    for(const fileName of chunk.files) {
-                                        const currentSource = compilation.assets[fileName];
-    
-                                        compilation.assets[fileName] = new ConcatSource(`import './${fileNames[importedFakeFiles]}';\n`, currentSource);
-                                    }
-    
-                                    importedFakeFiles++;
-                                }
-                            }
-                        }
-                    });
-                });
-
-                compiler.hooks.compile.tap("FakeFiles_compile", () => {
-                    function randomString(length) {
-                        var result           = [];
-                        var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-                        var charactersLength = characters.length;
-
-                        for ( var i = 0; i < length; i++ ) {
-                            result.push(characters.charAt(Math.floor(Math.random() * 
-                            charactersLength)));
-                        }
-
-                        return result.join('');
-                    }
-
-                    const filepath = path.resolve(__dirname, "../Server/resources/PARADOX_RP/client/");
-                    glob(`${filepath}/*.js`, (err, files) => {
-                        if(err) return console.error(err);
+                    glob(`${clientFilesPath}/*.js`).then(files => {
                         for(const file of files) if(!file.includes("index.js")) fs.unlinkSync(file);
-                    });
-
-                    for(let i=0;i<25;i++) {
-                        externals.push(`fake_file${i}`);
-
-                        const fileName = randomString(25);
-                        const fileData = javascriptObfuscator.obfuscate(`import alt from 'alt-client'; alt.log("[PARADOX ENCRYPTION] Loaded ${fileName}.js");`, obfuscatorSettings);
-
-                        fs.writeFileSync(`${filepath}/${fileName}.js`, `/**
+                    }).finally(() => {
+                        for(let i=0;i<45;i++) {
+                            const fileName = randomString(35);
+                            const fileData = javascriptObfuscator.obfuscate(`import alt from 'alt-client'; alt.log("[PARADOX ENCRYPTION] Loaded ${fileName}.js with AES-128");`, obfuscatorSettings);
+    
+                            fs.appendFileSync(indexFilePath, `\nimport './${fileName}.js';`);
+                            fs.writeFileSync(`${clientFilesPath}/${fileName}.js`, `/**
  * @license
-
+    
  * PARADOX ROLEPLAY
  * (C) 2021 Captcha, zeroday, Nova and Brace
  * By downloading you agree that you never will share, upload, copy or use this script/code/file.
  */
 ${fileData.getObfuscatedCode()}
-// Imagine man probiert PARADOX RP zu dumpen. Gz. Nova ;)`);
-
-                        fileNames.push(`${fileName}.js`);
-                        fileNames2.push(fileName);
-                    }
+${noticeInEveryFile}`);
+                        }
+                        
+                        fs.appendFileSync(indexFilePath, `\n${noticeInEveryFile}`);
+                    });
                 });
             },
         },

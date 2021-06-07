@@ -22,6 +22,7 @@ import './views/hud/chat';
 import './views/hud/weaponinfo';
 import './views/hud/voice';
 import './views/hud/xmenu';
+import './views/hud/notificiation';
 
 import alt from 'alt-client';
 import game from 'natives';

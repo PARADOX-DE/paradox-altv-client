@@ -50,5 +50,28 @@ export default {
                 resolve(true);
             });
         });
+    },
+    GetDirectionFromRotation(rotation: alt.IVector3) {
+        var z = rotation.z * (Math.PI / 180.0);
+        var x = rotation.x * (Math.PI / 180.0);
+        var num = Math.abs(Math.cos(x));
+    
+        return new alt.Vector3(
+            (-Math.sin(z) * num),
+            (Math.cos(z) * num),
+            Math.sin(x)
+        );
+    },
+    getRaycast() {
+        let start = game.getFinalRenderedCamCoord();
+        let rot = game.getFinalRenderedCamRot(2);
+        let fvector = this.GetDirectionFromRotation(rot);
+        let frontOf = new alt.Vector3((start.x + (fvector.x * 2000)), (start.y + (fvector.y * 2000)), (start.z + (fvector.z * 2000)));
+    
+        let raycast = game.startExpensiveSynchronousShapeTestLosProbe(start.x, start.y, start.z, frontOf.x, frontOf.y, frontOf.z, -1, alt.Player.local.scriptID, 7);
+        let getRaycast = game.getShapeTestResult(raycast);
+        getRaycast.push(rot);
+    
+        return getRaycast;
     }
 }

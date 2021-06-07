@@ -13,6 +13,7 @@
     "@altv/types-client": "^1.5.4",
     "@altv/types-natives": "^1.2.2",
     "glob": "^7.1.7",
+    "glob-promise": "^4.2.0",
     "webpack-messages": "^2.0.4",
     "webpack-obfuscator": "^2.6.0"
   },
