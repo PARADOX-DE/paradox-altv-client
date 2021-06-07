@@ -49,9 +49,9 @@ class XMenuView extends Window {
         
         if(raycast[4]) {
             this.targetId = raycast[4];
-            if(this.targetId == undefined || this.targetId == 11010) return false;
+            if(this.targetId == undefined || this.targetId == 11010) return;
 
-            if(localPlayer.vehicle != null) {
+            if(localPlayer.vehicle != null) { // current vehicle (inside)
                 items = [{
 					title: 'UR',
                     desc: "",
@@ -92,7 +92,7 @@ class XMenuView extends Window {
                     desc: "",
                     icon: 'exit'
 				}];
-            } else if(game.isEntityAVehicle(raycast[4])) {
+            } else if(game.isEntityAVehicle(raycast[4])) { // vehicle at raycast (outside)
                 items = [{
 					title: 'Schließen',
                     desc: "Schließe das Menü",
@@ -125,7 +125,52 @@ class XMenuView extends Window {
 
                 game.setVehicleLights(raycast[4], 2);
                 alt.setTimeout(() => game.setVehicleLights(raycast[4], 1), 300);
-            } else this.targetMarker = new Marker(27, game.getEntityCoords(raycast[4], false), 1.0, true, new alt.RGBA(255, 255, 255, 255), raycast[4]);
+            } else { // nothing or player
+                if(alt.isInDebug()) alt.log(`[RAYCAST][ENTITY] ${raycast[4]}`);
+                if(!game.doesEntityExist(raycast[4]) || raycast[4] == alt.Player.local.scriptID) return;
+
+                this.targetMarker = new Marker(27, game.getEntityCoords(raycast[4], false), 1.0, true, new alt.RGBA(255, 255, 255, 255), raycast[4]);
+                items = [{
+					title: 'UR',
+                    desc: "",
+                    icon: 'exit'
+				},
+				{
+					title: 'UR',
+                    desc: "",
+                    icon: 'exit'
+				},
+				{
+					title: 'UR',
+                    desc: "",
+                    icon: 'exit'
+				},
+				{
+					title: 'UR',
+                    desc: "",
+                    icon: 'exit'
+				},
+				{
+					title: 'UR',
+                    desc: "",
+                    icon: 'exit'
+				},
+				{
+					title: 'UR',
+                    desc: "",
+                    icon: 'exit'
+				},
+				{
+					title: 'UR',
+                    desc: "",
+                    icon: 'exit'
+				},
+				{
+					title: 'UR',
+                    desc: "",
+                    icon: 'exit'
+				}];
+            }
         }
 
         const [_, x, y] = game.getActiveScreenResolution();
@@ -134,10 +179,7 @@ class XMenuView extends Window {
         PlayerControlsController.showCursor(true);
 
         alt.setCursorPos({ x: x / 2, y: y / 2 });
-        alt.log(items.length);
-
         this.emit("Open", items);
-        return true;
     }
 
     closeXMenu() {
@@ -146,8 +188,6 @@ class XMenuView extends Window {
 
         if(this.targetMarker) this.targetMarker.destroy();
         this.emit("Close");
-        
-        return true;
     }
 
     onInteract(event: string) {
@@ -155,7 +195,7 @@ class XMenuView extends Window {
     }
     
     onKey(key: number, down: boolean) {
-        if(key != 88) return;
+        if(key != 88 || alt.isConsoleOpen()) return;
 
         if(down) this.openXMenu();
         else this.closeXMenu();
