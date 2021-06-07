@@ -13,6 +13,8 @@ class NotificationView extends View {
     }
 
     pushNotification(title: string, text: string, time: number) {
+        game.playSoundFrontend(-1, 'ATM_WINDOW', 'HUD_FRONTEND_DEFAULT_SOUNDSET', true);
+
         this.emit("PushNotification", title, text, time);
     }
 }
