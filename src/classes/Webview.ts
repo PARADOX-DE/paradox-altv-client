@@ -13,7 +13,9 @@ class Webview {
         EventHandler.onServer("Webview::ShowWindow", this.showWindow.bind(this));
         EventHandler.onServer("Webview::CloseWindow", this.closeWindow.bind(this));
 
-        EventHandler.onServer("ViewCallback", (componentName: string, eventName: string, ...args: any[]) => this.webView.emit(`${componentName}::${eventName}`, ...args));
+        EventHandler.onServer("ViewCallback", (componentName: string, eventName: string, args: {}) => {
+            this.webView.emit(`${componentName}::${eventName}`, args);
+        });
 
         this.webView.on("showCursor", state => controls.showCursor(state));
         this.webView.on("toggleGameControls", state => controls.toggleGameControls(state));
