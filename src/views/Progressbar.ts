@@ -2,7 +2,7 @@ import alt from 'alt-client';
 import Window from '../classes/Window';
 import EventController from '../controllers/EventController';
 
-class ProgressbarView extends Window {
+export class ProgressbarView extends Window {
     constructor() {
         super("Progressbar");
 

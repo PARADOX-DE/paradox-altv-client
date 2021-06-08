@@ -7,7 +7,7 @@ import Window from '../../classes/Window';
 import EventController from '../../controllers/EventController';
 import PlayerControlsController from '../../controllers/PlayerControlsController';
 
-class XMenuView extends Window {
+export class XMenuView extends Window {
     targetMarker?: Marker;
     targetId?: number;
 
@@ -126,7 +126,6 @@ class XMenuView extends Window {
                 game.setVehicleLights(raycast[4], 2);
                 alt.setTimeout(() => game.setVehicleLights(raycast[4], 1), 300);
             } else { // nothing or player
-                if(alt.isInDebug()) alt.log(`[RAYCAST][ENTITY] ${raycast[4]}`);
                 if(!game.doesEntityExist(raycast[4]) || raycast[4] == alt.Player.local.scriptID) return;
 
                 this.targetMarker = new Marker(27, game.getEntityCoords(raycast[4], false), 1.0, true, new alt.RGBA(255, 255, 255, 255), raycast[4]);

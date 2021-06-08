@@ -3,7 +3,7 @@ import Window from '../classes/Window';
 import EventController from '../controllers/EventController';
 import PlayerControlsController from '../controllers/PlayerControlsController';
 
-class GarageView extends Window {
+export class GarageView extends Window {
     constructor() {
         super("Garage");
 

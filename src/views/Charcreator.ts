@@ -4,7 +4,7 @@ import game from 'natives';
 import Window from '../classes/Window';
 import CharacterController from '../controllers/CharacterController';
 
-class CharcreatorView extends Window {
+export class CharcreatorView extends Window {
     private camera: number;
     private localPlayer: alt.Player;
 

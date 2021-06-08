@@ -60,4 +60,12 @@ export default class Window {
     close() {
         WebView.closeWindow(this.name);
     }
+
+    static isOpen(window: string): boolean {
+        return WindowController.windows.some(x => x.name === window);
+    }
+
+    static getWindow(window: string): Window | undefined {
+        return WindowController.windows.find(x => x.name === window);
+    }
 }

@@ -3,7 +3,7 @@ import Window from '../classes/Window';
 import EventController from '../controllers/EventController';
 import PlayerControlsController from '../controllers/PlayerControlsController';
 
-class BankView extends Window {
+export class BankView extends Window {
     constructor() {
         super("Bank");
 

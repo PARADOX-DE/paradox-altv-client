@@ -3,9 +3,12 @@ import Window from '../../classes/Window';
 import EventController from '../../controllers/EventController';
 import PlayerControlsController from '../../controllers/PlayerControlsController';
 
-class ChatView extends Window {
+export class ChatView extends Window {
+    open: boolean;
+
     constructor() {
         super("Chat");
+        this.open = false;
 
         this.on("Send", this.onMessage.bind(this));
         EventController.onServer("Chat::Receive", this.receiveMessage.bind(this));
@@ -16,6 +19,7 @@ class ChatView extends Window {
     }
 
     openChat() {
+        this.open = true;
         this.emit("Show");
 
         PlayerControlsController.toggleGameControls(false);
@@ -28,6 +32,7 @@ class ChatView extends Window {
         PlayerControlsController.toggleGameControls(true);
         PlayerControlsController.showCursor(false);
 
+        this.open = false;
         EventController.emitServer("chat:message", message);
     }
 

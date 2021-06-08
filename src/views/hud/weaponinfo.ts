@@ -4,7 +4,7 @@ import game from 'natives';
 import Window from '../../classes/Window';
 import Weapons from '../../data/weapons';
 
-class WeaponInfoView extends Window {
+export class WeaponInfoView extends Window {
     constructor() {
         super("WeaponInfo");
     }

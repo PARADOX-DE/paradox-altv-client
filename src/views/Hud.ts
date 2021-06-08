@@ -4,7 +4,7 @@ import game from 'natives';
 import Window from '../classes/Window';
 import HUDController from '../controllers/HUDController';
 
-class HudView extends Window {
+export class HudView extends Window {
     constructor() {
         super("Hud");
     }

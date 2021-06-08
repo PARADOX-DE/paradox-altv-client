@@ -1,17 +1,13 @@
+import alt from 'alt-client';
 import Window from '../classes/Window';
 
 import EventController from '../controllers/EventController';
 import PlayerControlsController from '../controllers/PlayerControlsController';
+import { ChatView } from './hud/chat';
 
-export class LoginView extends Window {
+export class InventoryView extends Window {
     constructor() {
-        super("Login");
-
-        this.on("Auth", this.onAuth.bind(this));
-    }
-
-    onAuth(username: string, password: string) {
-        EventController.emitServer("RequestLoginResponse", username, password);
+        super("Inventory");
     }
 
     onOpen() {
@@ -23,6 +19,16 @@ export class LoginView extends Window {
         PlayerControlsController.showCursor(false);
         PlayerControlsController.toggleGameControls(true);
     }
+
+    onKey(key: number, down: false) {
+        if(!down) return;
+        if(key == 73) {
+            const chatView = Window.getWindow("Chat");
+            if(chatView != undefined && (chatView as ChatView).open == true) return;
+
+            EventController.emitServer("Pressed_I");
+        }
+    }
 }
 
-export default new LoginView();
+export default new InventoryView();

@@ -1,7 +1,7 @@
 import EventController from '../../controllers/EventController';
 import Window from '../../classes/Window';
 
-class NotificationView extends Window {
+export class NotificationView extends Window {
     constructor() {
         super("Notification");
         

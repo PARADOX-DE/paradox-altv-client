@@ -17,6 +17,7 @@ import './views/Progressbar';
 import './views/Charcreator';
 import './views/Garage';
 import './views/Bank';
+import './views/Inventory';
 
 import './views/hud/chat';
 import './views/hud/weaponinfo';
@@ -49,5 +50,12 @@ alt.everyTick(() => {
 
 alt.on("keydown", key => {
     if(key == 69) return EventController.emitServer("Pressed_E");
-    else if(key == 73) return EventController.emitServer("Pressed_I");
 });
+
+declare module "alt-client" {
+    export function logDebug(...args: any[]): void;
+}
+
+alt.logDebug = (...args) => {
+    if(alt.isInDebug()) alt.log(`[DEBUG]`, ...args);
+}
