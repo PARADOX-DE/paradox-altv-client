@@ -12,7 +12,7 @@ export class CarshopView extends Window {
     savedPosition: alt.Vector3;
 
     constructor() {
-        super("Carshop");
+        super("CarShop");
 
         this.previewCam = 0;
         this.previewVehicle = 0;

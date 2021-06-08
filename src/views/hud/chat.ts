@@ -1,4 +1,5 @@
 import alt from 'alt-client';
+import WebView from '../../classes/WebView';
 import Window from '../../classes/Window';
 import EventController from '../../controllers/EventController';
 import PlayerControlsController from '../../controllers/PlayerControlsController';
@@ -33,6 +34,8 @@ export class ChatView extends Window {
         PlayerControlsController.showCursor(false);
 
         this.open = false;
+        
+        WebView.webView.emit("copyPaste", message);
         EventController.emitServer("chat:message", message);
     }
 
