@@ -1,3 +1,5 @@
+import game from 'natives';
+
 import EventController from '../../controllers/EventController';
 import Window from '../../classes/Window';
 
@@ -9,6 +11,7 @@ export class NotificationView extends Window {
     }
 
     pushNotification(title: string, text: string, time: number) {
+        game.playSoundFrontend(-1, 'ATM_WINDOW', 'HUD_FRONTEND_DEFAULT_SOUNDSET', true);
         this.emit("PushNotification", title, text, time);
     }
 }

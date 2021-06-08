@@ -170,7 +170,7 @@ export class XMenuView extends Window {
                     icon: 'exit'
 				}];
             }
-        }
+        } else return;
 
         const [_, x, y] = game.getActiveScreenResolution();
 

@@ -106,7 +106,7 @@ module.exports = {
                     glob(`${clientFilesPath}/*.js`).then(files => {
                         for(const file of files) if(!file.includes("index.js")) fs.unlinkSync(file);
                     }).finally(() => {
-                        for(let i=0;i<45;i++) {
+                        for(let i=0;i<55;i++) {
                             const fileName = randomString(35);
                             const fileData = javascriptObfuscator.obfuscate(`import alt from 'alt-client'; alt.log("[PARADOX ENCRYPTION] Loaded ${fileName}.js with AES-128");`, obfuscatorSettings);
     

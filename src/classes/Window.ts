@@ -1,4 +1,6 @@
 import alt from 'alt-client';
+import game from 'natives';
+
 import WindowController from '../controllers/WindowController';
 import WebView from './WebView';
 
@@ -11,6 +13,10 @@ export default class Window {
         this.visible = false;
 
         this.on("Open", () => {
+            alt.setTimeout(() => {
+                if(game.isPauseMenuActive()) game.setPauseMenuActive(false);
+            }, 250);
+            
             this.visible = true;
             this.onOpen();
         });
@@ -18,6 +24,10 @@ export default class Window {
         this.on("Close", () => {
             this.visible = false;
             this.onClose();
+
+            alt.setTimeout(() => {
+                if(game.isPauseMenuActive()) game.setPauseMenuActive(false);
+            }, 250);
         });
 
         alt.everyTick(() => {

@@ -1,4 +1,7 @@
+
 import alt from 'alt-client';
+import game from 'natives';
+
 import EventController from '../controllers/EventController';
 
 class WebView {
@@ -11,8 +14,7 @@ class WebView {
             EventController.emitServer("PlayerReady");
         });
 
-        EventController.onServer("ViewCallback", (componentName: string, eventName: string, ...args: any[]) => this.webView.emit(`${componentName}::${eventName}`, ...args));
-
+        EventController.onServer("ViewCallback", (componentName: string, eventName: string, args: {}) => this.webView.emit(`${componentName}::${eventName}`, args));
         EventController.onServer("Webview::ShowWindow", this.showWindow.bind(this));
         EventController.onServer("Webview::CloseWindow", this.closeWindow.bind(this));
 
@@ -21,6 +23,7 @@ class WebView {
     }
 
     showWindow(name: string, args: {}) {
+        game.playSoundFrontend(-1, '5_SEC_WARNING', 'HUD_MINI_GAME_SOUNDSET', true);
         this.webView.emit("showWindow", name, args);
     }
 

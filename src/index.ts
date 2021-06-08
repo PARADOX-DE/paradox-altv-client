@@ -1,5 +1,6 @@
 import './classes/WebView';
 
+import './controllers/AnimationController';
 import './controllers/WindowController';
 import './controllers/PlayerControlsController';
 import './controllers/HUDController';
@@ -18,6 +19,9 @@ import './views/Charcreator';
 import './views/Garage';
 import './views/Bank';
 import './views/Inventory';
+import './views/Carshop';
+import './views/Confirmation';
+import './views/Phone';
 
 import './views/hud/chat';
 import './views/hud/weaponinfo';
@@ -50,6 +54,7 @@ alt.everyTick(() => {
 
 alt.on("keydown", key => {
     if(key == 69) return EventController.emitServer("Pressed_E");
+    else if(key == 76) return EventController.emitServer("Pressed_L");
 });
 
 declare module "alt-client" {
@@ -59,3 +64,19 @@ declare module "alt-client" {
 alt.logDebug = (...args) => {
     if(alt.isInDebug()) alt.log(`[DEBUG]`, ...args);
 }
+
+EventController.onServer("SetPedIntoVeh", (vehicle: alt.Vehicle, seat: number) => {
+    let ticks = 0;
+
+    const interval = alt.setInterval(() => {
+        ticks++;
+
+        const vehicleScriptId = vehicle.scriptID
+        if (vehicleScriptId) {
+            game.setPedIntoVehicle(alt.Player.local.scriptID, vehicleScriptId, seat);
+            return alt.clearInterval(interval);
+        }
+
+        if(ticks > 50000) return alt.clearInterval(interval);
+    }, 10);
+});

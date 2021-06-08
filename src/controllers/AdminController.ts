@@ -16,7 +16,7 @@ class AdminController extends Controller {
         super("Admin");
         
         this.localPlayer = alt.Player.local;
-        this.aduty = true;
+        this.aduty = false;
         this.noclip = false;
         this.lastPressedKey = 0;
         
@@ -191,7 +191,16 @@ class AdminController extends Controller {
             if(game.isDisabledControlPressed(0, keys.RIGHT)) currentPos = this.addSpeedToVector(currentPos, dirRight, speed, true);
 
             const newPos = new alt.Vector3(currentPos.x, currentPos.y, currentPos.z);
-            if(!this.isVectorEqual(newPos, this.localPlayer.pos)) game.setEntityCoordsNoOffset(this.localPlayer.vehicle ? this.localPlayer.vehicle.scriptID : this.localPlayer.scriptID, newPos.x, newPos.y, newPos.z, true, false, false);
+            if(!this.isVectorEqual(newPos, this.localPlayer.pos)) {
+                game.setEntityCoordsNoOffset(this.localPlayer.vehicle ? this.localPlayer.vehicle.scriptID : this.localPlayer.scriptID, newPos.x, newPos.y, newPos.z, true, false, false);
+            }
+
+            if(this.localPlayer.vehicle != null) {
+                game.setEntityRotation(this.localPlayer.vehicle.scriptID, rot.y, rot.x, rot.y, 2, true);
+                game.setEntityHeading(this.localPlayer.vehicle.scriptID, rot.z);
+
+                game.setVehicleForwardSpeed(this.localPlayer.vehicle.scriptID, 0);
+            }
         }
 
         if(this.aduty) {
