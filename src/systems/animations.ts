@@ -4,24 +4,27 @@ import game from 'natives';
 import EventHandler from '../handlers/EventHandler';
 import AnimationHandler from '../handlers/AnimationHandler';
 import View from '../classes/View';
+import Webview from '../classes/Webview';
 
 class Animations  {
     constructor() {
         EventHandler.onServer("PlayAnimation", this.playAnimation.bind(this));
         EventHandler.onServer("StopAnimation", this.stopAnimation.bind(this));
+
         EventHandler.onServer("StartEffect", (name, duration, looped) => {
-            alt.log("StartEffect Event")
             game.animpostfxStopAll()
             if(looped == 1)
             game.animpostfxPlay(name, duration, true)
-            else
+                else
             game.animpostfxPlay(name, duration, false)
         });
         
         EventHandler.onServer("StopEffect", () => {
-            alt.log("StopEffect Event")
             game.animpostfxStopAll()
         });
+        
+        Webview.webView.on("PlayAnimation", this.playAnimation.bind(this));
+        Webview.webView.on("StopAnimation", this.stopAnimation.bind(this));
     }
 
     playAnimation(dict: string, name: string, flag: number = 9, duration: number = -1) {
