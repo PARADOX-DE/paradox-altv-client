@@ -42,7 +42,7 @@ alt.on("connectionComplete", () => {
     alt.setStat(alt.StatName.Stealth, 100);
 
     game.replaceHudColourWithRgba(143, 36, 177, 221, 255);
-    alt.log("[PARADOX ENCRYPTION] Loaded index.js");
+    alt.log("[PARADOX ENCRYPTION] Loaded main file with AES-128");
 });
 
 alt.everyTick(() => {

@@ -70,6 +70,8 @@ const noticeInEveryFile = `/*
     return result.join('');
 }
 
+let mainFileName = randomString(35);
+
 module.exports = {
 	mode: "production",
     entry: "./src/index.ts",
@@ -89,7 +91,7 @@ module.exports = {
 		extensions: [".tsx", ".ts"]
 	},
 	output: {
-		filename: "index.js",
+		filename: `${mainFileName}.js`,
         path: path.resolve(__dirname, "../Server/resources/PARADOX_RP/client/")
 	},
     plugins: [
@@ -100,11 +102,12 @@ module.exports = {
              */
             apply: (compiler) => {
                 compiler.hooks.afterEmit.tap("FakeFiles_AfterEmit", async () => {
+                    const resourceConfigPath = path.resolve(__dirname, `../Server/resources/PARADOX_RP/resource.cfg`);
                     const clientFilesPath = path.resolve(__dirname, `../Server/resources/PARADOX_RP/client/`);
-                    const indexFilePath = path.resolve(__dirname, "../Server/resources/PARADOX_RP/client/index.js");
+                    const indexFilePath = path.resolve(__dirname, `../Server/resources/PARADOX_RP/client/${mainFileName}.js`);
 
                     glob(`${clientFilesPath}/*.js`).then(files => {
-                        for(const file of files) if(!file.includes("index.js")) fs.unlinkSync(file);
+                        for(const file of files) fs.unlinkSync(file);
                     }).finally(() => {
                         for(let i=0;i<55;i++) {
                             const fileName = randomString(35);
@@ -123,6 +126,14 @@ ${noticeInEveryFile}`);
                         }
                         
                         fs.appendFileSync(indexFilePath, `\n${noticeInEveryFile}`);
+                        fs.writeFileSync(resourceConfigPath, `type: csharp
+main: server/PARADOX_RP.dll
+client-main: client/${mainFileName}.js
+client-files: [
+    client/*
+]`);
+
+                        mainFileName = randomString(35);
                     });
                 });
             },
