@@ -8,6 +8,7 @@ import './controllers/CharacterController';
 import './controllers/ClothingController';
 import './controllers/AdminController';
 import './controllers/BlipController';
+import './controllers/CutsceneController';
 
 import EventController from './controllers/EventController';
 import './util';
@@ -28,6 +29,8 @@ import './views/hud/weaponinfo';
 import './views/hud/voice';
 import './views/hud/xmenu';
 import './views/hud/notificiation';
+import './views/hud/info';
+import './views/hud/speedometer';
 
 import alt from 'alt-client';
 import game from 'natives';

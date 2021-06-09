@@ -54,7 +54,7 @@ class CharacterController extends Controller {
         this.tempData = data;
 
         const modelNeeded = this.tempData.sex === 0 ? this.fModel : this.mModel;
-        if(this.localPlayer.model !== modelNeeded) EventController.emitServer("setModel", modelNeeded);
+        if(this.localPlayer.model !== modelNeeded) EventController.emitServer("SetModel", modelNeeded);
 
         game.clearPedDecorations(this.localPlayer.scriptID);
         game.setPedHeadBlendData(this.localPlayer.scriptID, 0, 0, 0, 0, 0, 0, 0, 0, 0, false);

@@ -6,6 +6,11 @@ export class VoiceView extends Window {
         super("VoiceSection");
 
         EventController.onServer("UpdateVoiceRange", this.UpdateVoiceRange.bind(this));
+        EventController.onServer("UpdatePhone", this.UpdatePhone.bind(this));
+    }
+
+    UpdatePhone(state: boolean) {
+        this.emit("UpdatePhone", state);
     }
 
     UpdateVoiceRange(level: number) {
