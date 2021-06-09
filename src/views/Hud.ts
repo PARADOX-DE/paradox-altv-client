@@ -19,7 +19,9 @@ export class HudView extends Window {
         this.emit("Count::Update", alt.Player.all.length);
 
         game.hideHudComponentThisFrame(2);
+        game.hideHudComponentThisFrame(6);
         game.hideHudComponentThisFrame(7);
+        game.hideHudComponentThisFrame(8);
         game.hideHudComponentThisFrame(9);
     }
 

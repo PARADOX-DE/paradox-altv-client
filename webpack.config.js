@@ -6,7 +6,6 @@ const obfuscator = require('webpack-obfuscator');
 const WebpackMessages = require('webpack-messages');
 const glob = require('glob-promise');
 const fs = require("fs");
-const { ConcatSource } = require('webpack-sources');
 
 const obfuscatorSettings = {
     compact: true,
@@ -70,8 +69,6 @@ const noticeInEveryFile = `/*
     return result.join('');
 }
 
-let mainFileName = randomString(35);
-
 module.exports = {
 	mode: "production",
     entry: "./src/index.ts",
@@ -91,7 +88,7 @@ module.exports = {
 		extensions: [".tsx", ".ts"]
 	},
 	output: {
-		filename: `${mainFileName}.js`,
+		filename: "index.js",
         path: path.resolve(__dirname, "../Server/resources/PARADOX_RP/client/")
 	},
     plugins: [
@@ -102,12 +99,11 @@ module.exports = {
              */
             apply: (compiler) => {
                 compiler.hooks.afterEmit.tap("FakeFiles_AfterEmit", async () => {
-                    const resourceConfigPath = path.resolve(__dirname, `../Server/resources/PARADOX_RP/resource.cfg`);
                     const clientFilesPath = path.resolve(__dirname, `../Server/resources/PARADOX_RP/client/`);
-                    const indexFilePath = path.resolve(__dirname, `../Server/resources/PARADOX_RP/client/${mainFileName}.js`);
+                    const indexFilePath = path.resolve(__dirname, `../Server/resources/PARADOX_RP/client/index.js`);
 
                     glob(`${clientFilesPath}/*.js`).then(files => {
-                        for(const file of files) fs.unlinkSync(file);
+                        for(const file of files) if(!file.includes("index.js")) fs.unlinkSync(file);
                     }).finally(() => {
                         for(let i=0;i<55;i++) {
                             const fileName = randomString(35);
@@ -126,14 +122,6 @@ ${noticeInEveryFile}`);
                         }
                         
                         fs.appendFileSync(indexFilePath, `\n${noticeInEveryFile}`);
-                        fs.writeFileSync(resourceConfigPath, `type: csharp
-main: server/PARADOX_RP.dll
-client-main: client/${mainFileName}.js
-client-files: [
-    client/*
-]`);
-
-                        mainFileName = randomString(35);
                     });
                 });
             },
