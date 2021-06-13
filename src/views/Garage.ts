@@ -11,7 +11,7 @@ export class GarageView extends Window {
         this.on("Take", this.onTake.bind(this));
     }
 
-    onPark(carId: number) {
+    onPark(carId: number, garageId: number) {
         EventController.emitServer("ParkVehicle", carId);
     }
 
