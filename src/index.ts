@@ -21,6 +21,7 @@ import './views/Garage';
 import './views/Bank';
 import './views/Inventory';
 import './views/Carshop';
+import './views/Shop';
 import './views/Confirmation';
 import './views/Death';
 import './views/Phone';
