@@ -9,6 +9,7 @@ import './controllers/ClothingController';
 import './controllers/AdminController';
 import './controllers/BlipController';
 import './controllers/CutsceneController';
+import './controllers/AnticheatController';
 
 import EventController from './controllers/EventController';
 import './util';
