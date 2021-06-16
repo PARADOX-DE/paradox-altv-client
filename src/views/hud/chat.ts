@@ -17,6 +17,7 @@ export class ChatView extends Window {
 
     onKey(key: number, down: false, isOpen: boolean) {
         if(!alt.isConsoleOpen() && !isOpen && key == 84 && down) this.openChat();
+        if(!alt.isConsoleOpen() && isOpen && key == 38 && down) this.scrollChat(true);
     }
 
     openChat() {
@@ -27,6 +28,11 @@ export class ChatView extends Window {
         PlayerControlsController.showCursor(true);
 
         return true;
+    }
+
+    scrollChat(up: boolean) {
+        if(up)
+            this.emit("ScrollUp");
     }
 
     onMessage(message: string) {
