@@ -3,6 +3,7 @@ import game from 'natives';
 
 import Window from '../classes/Window';
 import CharacterController from '../controllers/CharacterController';
+import PlayerControlsController from '../controllers/PlayerControlsController';
 
 export class CharcreatorView extends Window {
     private camera: number;
@@ -31,6 +32,9 @@ export class CharcreatorView extends Window {
             game.setCamActive(this.camera, true);
             game.pointCamAtCoord(this.camera, this.localPlayer.pos.x, this.localPlayer.pos.y, this.localPlayer.pos.z);
             game.renderScriptCams(true, true, 500, false, false, 0);
+
+            PlayerControlsController.showCursor(true);
+            PlayerControlsController.toggleGameControls(false);
         }, 250);
     }
 
@@ -38,6 +42,9 @@ export class CharcreatorView extends Window {
         if(this.camera != 0) {
             game.destroyCam(this.camera, false);
             game.renderScriptCams(false, false, 0, false, false, 0);
+
+            PlayerControlsController.showCursor(false);
+            PlayerControlsController.toggleGameControls(true);
         }
     }
 }

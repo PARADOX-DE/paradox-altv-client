@@ -8,6 +8,11 @@ export class LoginView extends Window {
         super("Login");
 
         this.on("Auth", this.onAuth.bind(this));
+        EventController.onServer("ResponseLoginStatus", this.onResponseLoginStatus.bind(this));
+    }
+
+    onResponseLoginStatus(status: string) {
+        this.emit("Status", status);
     }
 
     onAuth(username: string, password: string) {
