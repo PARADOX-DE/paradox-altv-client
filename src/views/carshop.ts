@@ -77,8 +77,8 @@ export class CarshopView extends Window {
         game.setVehicleColours(this.previewVehicle, 0, 0);
     }
 
-    PreviewVehicleChangeColor(colorId: number){
-        if(this.previewVehicle != 0) game.setVehicleColours(this.previewVehicle, colorId, colorId);
+    PreviewVehicleChangeColor(r: number, g: number, b: number){
+        if(this.previewVehicle != 0) game.setVehicleCustomPrimaryColour(this.previewVehicle, r, g, b);
     }
     
     LeaveCarShop() {
