@@ -36,6 +36,8 @@ import './views/hud/notificiation';
 import './views/hud/info';
 import './views/hud/speedometer';
 
+import './systems/VehiclePush';
+
 import alt from 'alt-client';
 import game from 'natives';
 
