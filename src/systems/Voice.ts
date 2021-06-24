@@ -44,6 +44,12 @@ class Voice {
         if(data.method == "talking") {
             const val: boolean = data.data.status;
             logDebug(`[VOICE][WEBSOCKET] ${data.data.name} Talking: ${val}`);
+        } else if(data.method == "Connected") {
+            this.send({ method: "joinChannel", data: {
+                channel: "Ingame",
+                password: "1337",
+                username: alt.Player.local.name
+            }});
         }
     }
 
