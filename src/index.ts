@@ -1,3 +1,6 @@
+import alt from 'alt-client';
+import game from 'natives';
+
 import './classes/WebView';
 
 import './controllers/AnimationController';
@@ -36,8 +39,9 @@ import './views/hud/notificiation';
 import './views/hud/info';
 import './views/hud/speedometer';
 
-import alt from 'alt-client';
-import game from 'natives';
+import './systems/VehiclePush';
+import './systems/Voice';
+import './systems/Flatbed';
 
 alt.on("connectionComplete", () => {
     alt.setStat(alt.StatName.Stamina, 100);
@@ -63,14 +67,6 @@ alt.on("keydown", key => {
     if(key == 69) return EventController.emitServer("Pressed_E");
     else if(key == 76) return EventController.emitServer("Pressed_L");
 });
-
-declare module "alt-client" {
-    export function logDebug(...args: any[]): void;
-}
-
-alt.logDebug = (...args) => {
-    if(alt.isInDebug()) alt.log(`[DEBUG]`, ...args);
-}
 
 EventController.onServer("SetPedIntoVeh", (vehicle: alt.Vehicle, seat: number) => {
     let ticks = 0;

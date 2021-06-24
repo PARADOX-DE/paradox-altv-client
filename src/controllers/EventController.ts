@@ -12,7 +12,7 @@ class EventController extends Controller {
 
     emitServer(eventName: string, ...args: any[]) {
         alt.emitServer(eventName, ...args);
-        if(alt.isInDebug()) alt.log(`[EventController][EMIT] ${eventName}: ${args.join(", ")}`);
+        if(alt.debug) alt.log(`[EventController][EMIT] ${eventName}: ${args.join(", ")}`);
     }
 }
 

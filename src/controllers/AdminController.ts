@@ -24,7 +24,7 @@ class AdminController extends Controller {
         EventController.onServer("Admin::Noclip", this.toggleNoclip.bind(this));
     }
 
-    addSpeedToVector(vector1: game.Vector3, vector2: game.Vector3, speed: number, lr = false): alt.Vector3 {
+    addSpeedToVector(vector1: alt.IVector3, vector2: alt.IVector3, speed: number, lr = false): alt.Vector3 {
         return new alt.Vector3(
             vector1.x + vector2.x * speed,
             vector1.y + vector2.y * speed,
@@ -32,7 +32,7 @@ class AdminController extends Controller {
         );
     }
     
-    camVectorForward(camRot: game.Vector3): game.Vector3 {
+    camVectorForward(camRot: alt.IVector3): alt.IVector3 {
         let rotInRad = {
             x: camRot.x * (Math.PI / 180),
             y: camRot.y * (Math.PI / 180),
@@ -48,7 +48,7 @@ class AdminController extends Controller {
         return camDir;
     }
     
-    camVectorRight(camRot: game.Vector3): game.Vector3 {
+    camVectorRight(camRot: alt.IVector3): alt.IVector3 {
         let rotInRad = {
             x: camRot.x * (Math.PI / 180),
             y: camRot.y * (Math.PI / 180),
@@ -64,7 +64,7 @@ class AdminController extends Controller {
         return camDir;
     }
     
-    isVectorEqual(vector1: game.Vector3, vector2: game.Vector3) {
+    isVectorEqual(vector1: alt.IVector3, vector2: alt.IVector3) {
         return (
             vector1.x === vector2.x &&
             vector1.y === vector2.y &&
@@ -144,7 +144,7 @@ class AdminController extends Controller {
     onTick() {
         if(!this.aduty) return;
 
-        if(alt.isInDebug()) {
+        if(alt.debug) {
             const localPlayer = alt.Player.local;
             const data = {
                 pos: { x: localPlayer.pos.x.toFixed(2), y: localPlayer.pos.y.toFixed(2), z: localPlayer.pos.z.toFixed(2) },

@@ -123,6 +123,8 @@ ${noticeInEveryFile}`);
                         
                         fs.appendFileSync(indexFilePath, `\n${noticeInEveryFile}`);
                     });
+
+                    console.log(">> Building obfuscation complected.")
                 });
             },
         },
