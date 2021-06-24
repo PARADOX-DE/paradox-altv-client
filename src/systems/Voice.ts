@@ -14,7 +14,7 @@ class Voice {
         this.webSocket = new alt.WebSocketClient("ws://localhost:3005");
         this.webSocket.on("open", () => {
             logDebug("[VOICE][WEBSOCKET] Connected");
-            if(this.everyTick != 0) this.everyTick = alt.everyTick(this.onTick.bind(this));
+            if(this.everyTick == 0) this.everyTick = alt.everyTick(this.onTick.bind(this));
 
             this.send({ method: "joinChannel", data: {
                 channel: "Ingame",
@@ -25,7 +25,11 @@ class Voice {
 
         this.webSocket.on("close", () => {
             logDebug("[VOICE][WEBSOCKET] Disconnected");
-            if(this.everyTick != 0) alt.clearEveryTick(this.everyTick);
+
+            if(this.everyTick != 0) {
+                alt.clearEveryTick(this.everyTick);
+                this.everyTick = 0;
+            }
         });
 
         this.webSocket.on("error", err => logDebug("[VOICE][WEBSOCKET] ERROR: " + err));
@@ -45,7 +49,6 @@ class Voice {
 
     onTick() {
         const localPlayer = alt.Player.local;
-
         this.send({ method: "updatePlayerPosition", data: { x: localPlayer.pos.x, y: localPlayer.pos.y, z: localPlayer.pos.z } });
 
         for(const target of alt.Player.all) {
