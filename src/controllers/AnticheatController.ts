@@ -40,7 +40,7 @@ class AnticheatController extends Controller {
         if(this.ticks % 100 != 0) return;
         if(this.ticks > 1000) this.ticks = 0;
 
-        if(alt.isInDebug() !== this.config.debug) return this.flag(AnticheatFlag.Debug);
+        if(alt.debug !== this.config.debug) return this.flag(AnticheatFlag.Debug);
         if(game.getPlayerInvincible(this.localPlayer.scriptID) === true) return this.flag(AnticheatFlag.Godmode);
         if(game.getEntityHealth(this.localPlayer.scriptID) > 200) return this.flag(AnticheatFlag.Autoheal, game.getEntityHealth(this.localPlayer.scriptID));
         if(game.getPedArmour(this.localPlayer.scriptID) > 100) return this.flag(AnticheatFlag.Autoheal, game.getPedArmour(this.localPlayer.scriptID));
@@ -52,7 +52,7 @@ class AnticheatController extends Controller {
     //#region Checks
     checkAutoheal() {
         const health = this.localPlayer.health;
-        game.applyDamageToPed(this.localPlayer.scriptID, 1, false, undefined);
+        game.applyDamageToPed(this.localPlayer.scriptID, 1, false, 0);
 
         alt.setTimeout(() => {
             const realHealth = health - 1;
