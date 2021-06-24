@@ -54,7 +54,10 @@ class Voice {
         for(const target of alt.Player.all) {
             if(target.scriptID == 0 || target.id == localPlayer.id) continue;
 
-            const targetPos = localPlayer.pos;
+            const targetPos = target.pos;
+            const distance = targetPos.distanceTo(localPlayer.pos);
+            if(distance >= 50) continue;
+            
             this.send({ method: "updateTargetPosition", data: { name: localPlayer.name, x: targetPos.x, y: targetPos.y, z: targetPos.z } });
         }
     }
