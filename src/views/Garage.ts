@@ -12,7 +12,7 @@ export class GarageView extends Window {
     }
 
     onPark(carId: number, garageId: number) {
-        EventController.emitServer("ParkVehicle", carId);
+        EventController.emitServer("GarageParkIn", carId, garageId);
     }
 
     onTake(carId: number, garageId: number) {
