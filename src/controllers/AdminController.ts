@@ -24,6 +24,14 @@ class AdminController extends Controller {
         EventController.onServer("Admin::Noclip", this.toggleNoclip.bind(this));
     }
 
+    forwardVectorFromRotation(rotation: alt.Vector3) {
+        let z = rotation.z * (Math.PI / 180.0);
+        let x = rotation.x * (Math.PI / 180.0);
+        let num = Math.abs(Math.cos(x));
+
+        return new alt.Vector3(-Math.sin(z) * num, Math.cos(z) * num, Math.sin(x));
+    }
+
     addSpeedToVector(vector1: alt.IVector3, vector2: alt.IVector3, speed: number, lr = false): alt.Vector3 {
         return new alt.Vector3(
             vector1.x + vector2.x * speed,
@@ -205,7 +213,8 @@ class AdminController extends Controller {
 
         if(this.aduty) {
             for(const player of alt.Player.all) { 
-                if(player.scriptID == 0 || player.scriptID == this.localPlayer.scriptID) continue;
+                //if(player.scriptID == 0 || player.scriptID == this.localPlayer.scriptID) continue;
+                if(player.scriptID == 0) continue;
             
                 const position = player.pos;
                 const distance = position.distanceTo(this.localPlayer.pos);
@@ -213,10 +222,10 @@ class AdminController extends Controller {
                 if(distance > 80) continue;
         
                 let scale = 1 - (0.8 * distance) / 25;
-                let fontSize = 0.6 * scale;
+                let fontSize = 0.5 * scale;
         
                 let [res, x, y] = game.getScreenCoordFromWorldCoord(position.x, position.y, position.z + 1.0, 0, 0);
-                if(res) this.DrawText(`${player.name}`, x, y - 0.030, fontSize, 4, 255, 255, 255, 255, true, false);
+                if(res) this.DrawText(`${player.name}`, x, y - 0.030, fontSize, 0, 255, 255, 255, 255, true, false);
             }
         }
     }

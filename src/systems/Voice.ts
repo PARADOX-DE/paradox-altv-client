@@ -1,5 +1,4 @@
 import alt from 'alt-client';
-import game from 'natives';
 
 function logDebug(...args: any[]) {
     if(alt.debug) alt.log(`[DEBUG]`, ...args);
@@ -17,11 +16,11 @@ class Voice {
             logDebug("[VOICE][WEBSOCKET] Connected");
             if(this.everyTick != 0) this.everyTick = alt.everyTick(this.onTick.bind(this));
 
-            this.webSocket.send(JSON.stringify({ method: "joinChannel", data: {
+            this.send({ method: "joinChannel", data: {
                 channel: "Ingame",
                 password: "1337",
-                username: "187 ist die gang"
-            }}));
+                username: alt.Player.local.name
+            }});
         });
 
         this.webSocket.on("close", () => {
@@ -46,29 +45,20 @@ class Voice {
 
     onTick() {
         const localPlayer = alt.Player.local;
-        const range = 50.0;
-        let list: { username: string, x: number, y: number, z: number }[] = [];
 
-        for(const player of alt.Player.all) {
-            if(player.scriptID == 0 || player.id == localPlayer.id || player.scriptID == localPlayer.scriptID) continue;
+        this.send({ method: "updatePlayerPosition", data: { x: localPlayer.pos.x, y: localPlayer.pos.y, z: localPlayer.pos.z } });
 
-            const playerPos = localPlayer.pos;
-            const playerRot = game.getGameplayCamRot(2);
-            const rotation = Math.PI / 180 * (playerRot.z * -1);
+        for(const target of alt.Player.all) {
+            if(target.scriptID == 0 || target.id == localPlayer.id) continue;
 
-            const streamedPlayerPos = player.pos;
-            const subPos = streamedPlayerPos.sub(playerPos.x, playerPos.y, playerPos.z);
-
-            let x = subPos.x * Math.cos(rotation) - subPos.y * Math.sin(rotation);
-            let y = subPos.x * Math.sin(rotation) + subPos.y * Math.cos(rotation);
-
-            x *= 10 / range;
-            y *= 10 / range;
-
-            list.push({ username: player.name, x, y, z: streamedPlayerPos.z });
+            const targetPos = localPlayer.pos;
+            this.send({ method: "updateTargetPosition", data: { name: localPlayer.name, x: targetPos.x, y: targetPos.y, z: targetPos.z } });
         }
+    }
 
-        this.webSocket.send(JSON.stringify({ method: "updatePositions", data: list }));
+    send(data: any) {
+        if(typeof data == "string") this.webSocket.send(data);
+        else this.webSocket.send(JSON.stringify(data));
     }
 }
 
