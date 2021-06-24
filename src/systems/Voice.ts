@@ -49,6 +49,7 @@ class Voice {
 
     onTick() {
         const localPlayer = alt.Player.local;
+        const list: { name: string, x: number, y: number, z: number }[] = [];
         this.send({ method: "updatePlayerPosition", data: { x: localPlayer.pos.x, y: localPlayer.pos.y, z: localPlayer.pos.z } });
 
         for(const target of alt.Player.all) {
@@ -57,9 +58,11 @@ class Voice {
             const targetPos = target.pos;
             const distance = targetPos.distanceTo(localPlayer.pos);
             if(distance >= 50) continue;
-            
-            this.send({ method: "updateTargetPosition", data: { name: localPlayer.name, x: targetPos.x, y: targetPos.y, z: targetPos.z } });
+
+            list.push({ name: target.name, x: targetPos.x, y: targetPos.y, z: targetPos.z });
         }
+        
+        this.send({ method: "updateTargetPositions", data: list });
     }
 
     send(data: any) {
