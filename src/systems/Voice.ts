@@ -1,4 +1,5 @@
 import alt from 'alt-client';
+import game from 'natives';
 
 function logDebug(...args: any[]) {
     if(alt.debug) alt.log(`[DEBUG]`, ...args);
@@ -19,7 +20,7 @@ class Voice {
             this.send({ method: "joinChannel", data: {
                 channel: "Ingame",
                 password: "1337",
-                username: alt.Player.local.name
+                username: "Nova1"
             }});
         });
 
@@ -48,7 +49,7 @@ class Voice {
             this.send({ method: "joinChannel", data: {
                 channel: "Ingame",
                 password: "1337",
-                username: alt.Player.local.name
+                username: "Nova1"
             }});
         }
     }
@@ -56,16 +57,41 @@ class Voice {
     onTick() {
         const localPlayer = alt.Player.local;
         const list: { name: string, x: number, y: number, z: number }[] = [];
-        this.send({ method: "updatePlayerPosition", data: { x: localPlayer.pos.x, y: localPlayer.pos.y, z: localPlayer.pos.z } });
+        const rotation = Math.PI / 180 * (game.getGameplayCamRot(2).z * -1);
+        const range = 50;
 
-        for(const target of alt.Player.all) {
-            if(target.scriptID == 0 || target.id == localPlayer.id) continue;
+        const fakePlayer = [
+            { 
+                id: localPlayer.id,
+                scriptID: localPlayer.scriptID,
+                pos: localPlayer.pos,
+                name: "Nova1"
+            },
+            {
+                id: 25,
+                scriptID: 50,
+                pos: new alt.Vector3(150.94, -1037.47, 29.37),
+                name: "Nova2"
+            }
+        ];
 
-            const targetPos = target.pos;
-            const distance = targetPos.distanceTo(localPlayer.pos);
-            if(distance >= 50) continue;
-
-            list.push({ name: target.name, x: targetPos.x, y: targetPos.y, z: targetPos.z });
+        try {
+            //for(const target of alt.Player.all) {
+            for(const target of fakePlayer) {
+                if(target.scriptID == 0 || target.id == localPlayer.id) continue;
+    
+                const targetPos = target.pos;
+                const distance = localPlayer.pos.distanceTo({ x: targetPos.x, y: targetPos.y, z: targetPos.z });
+                if(distance > range) continue;
+    
+                const subPos = targetPos.sub({ x: localPlayer.pos.x, y: localPlayer.pos.y, z: localPlayer.pos.z });
+                let x = (subPos.x * Math.cos(rotation) - subPos.y * Math.sin(rotation)) * 10 / range;
+                let y = (subPos.x * Math.sin(rotation) + subPos.y * Math.cos(rotation)) * 10 / range;
+                
+                list.push({ name: target.name, x: x, y: y, z: 0 });
+            }
+        } catch(err) {
+            logDebug(`[PARADOX][WEBSOCKET] onTick error: ${err}`);
         }
         
         this.send({ method: "updateTargetPositions", data: list });
