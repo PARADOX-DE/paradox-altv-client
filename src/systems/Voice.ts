@@ -56,8 +56,9 @@ class Voice {
 
     onTick() {
         const localPlayer = alt.Player.local;
-        const list: { name: string, x: number, y: number, z: number }[] = [];
-        const rotation = Math.PI / 180 * (game.getGameplayCamRot(2).z * -1);
+        const list: { name: string, x: number, y: number, z: number, distance: number, voiceRange: number }[] = [];
+        //const rotation = Math.PI / 180 * (game.getGameplayCamRot(2).z * -1);
+        const rotation = game.getGameplayCamRot(0).z;
         const range = 50;
 
         const fakePlayer = [
@@ -85,10 +86,10 @@ class Voice {
                 if(distance > range) continue;
     
                 const subPos = targetPos.sub({ x: localPlayer.pos.x, y: localPlayer.pos.y, z: localPlayer.pos.z });
-                let x = (subPos.x * Math.cos(rotation) - subPos.y * Math.sin(rotation)) * 10 / range;
-                let y = (subPos.x * Math.sin(rotation) + subPos.y * Math.cos(rotation)) * 10 / range;
+                const x = (subPos.x * Math.cos(rotation) - subPos.y * Math.sin(rotation)) * 10 / range;
+                const y = (subPos.x * Math.sin(rotation) + subPos.y * Math.cos(rotation)) * 10 / range;
                 
-                list.push({ name: target.name, x: x, y: y, z: 0 });
+                list.push({ name: target.name, x: x, y: y, z: 0, distance: distance, voiceRange: 50 });
             }
         } catch(err) {
             logDebug(`[PARADOX][WEBSOCKET] onTick error: ${err}`);
