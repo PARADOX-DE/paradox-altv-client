@@ -27,26 +27,26 @@ class CharacterController extends Controller {
     }
 
     sendToServer() {
-        EventController.emitServer("SavePlayerCharacter", this.tempData.firstName, this.tempData.lastname, this.tempData.birthday, JSON.stringify({
-            choiseMale: this.tempData.choiseMale,
-            choiseFemale: this.tempData.choiseFemale,
+        EventController.emitServer("SavePlayerCharacter", this.tempData.firstName, this.tempData.secondName, this.tempData.birthday, JSON.stringify({
+            Father: this.tempData.choiseMale,
+            Mother: this.tempData.choiseFemale,
            
-            resemblance: this.tempData.resemblance,
-            skintone: this.tempData.skintone,
+            Resemblance: this.tempData.resemblance,
+            SkinTone: this.tempData.skintone,
 
-            facedata: this.tempData.facedata,
+            FaceData: this.tempData.facedata,
 
-            opacityOverlays: this.tempData.opacityOverlays,
-            hairOverlay: this.tempData.hairOverlay,
+            OpacityOverlays: this.tempData.opacityOverlays,
+            HairOverlay: this.tempData.hairOverlay,
 
-            hairstyle: this.tempData.hairstyle,
-            hair_color: this.tempData.hair_color,
+            HairStyle: this.tempData.hairstyle,
+            HairColor: this.tempData.hair_color,
 
-            eyebrowShape: this.tempData.eyebrowShape,
-            eyebrowThickness: this.tempData.eyebrowThickness,
+            EyebrowShape: this.tempData.eyebrowShape,
+            EyebrowThickness: this.tempData.eyebrowThickness,
 
-            eye_color: this.tempData.eye_color,
-            gender: this.tempData.gender
+            EyeColor: this.tempData.eye_color,
+            Gender: this.tempData.gender
         }));
     }
 
