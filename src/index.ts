@@ -42,6 +42,7 @@ import './views/hud/speedometer';
 import './systems/VehiclePush';
 import './systems/Voice';
 import './systems/Flatbed';
+import './systems/CryptoRoom';
 
 alt.on("connectionComplete", () => {
     alt.setStat(alt.StatName.Stamina, 100);
