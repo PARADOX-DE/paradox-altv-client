@@ -19,6 +19,7 @@ export class CarshopView extends Window {
         this.savedPosition = new alt.Vector3(0,0,0);
         
         this.on("PreviewVehicle", this.PreviewVehicle.bind(this));
+        this.on("PreviewVehicleRotate", this.PreviewVehicleRotate.bind(this));
         this.on("PreviewVehicleChangeColor", this.PreviewVehicleChangeColor.bind(this));
         this.on("LeaveCarShop", this.LeaveCarShop.bind(this));
     }
@@ -77,8 +78,12 @@ export class CarshopView extends Window {
         game.setVehicleColours(this.previewVehicle, 0, 0);
     }
 
-    PreviewVehicleChangeColor(colorId: number){
-        if(this.previewVehicle != 0) game.setVehicleColours(this.previewVehicle, colorId, colorId);
+    PreviewVehicleChangeColor(r: number, g: number, b: number){
+        if(this.previewVehicle != 0) game.setVehicleCustomPrimaryColour(this.previewVehicle, r, g, b);
+    }
+
+    PreviewVehicleRotate(rotation: number) {
+        if(this.previewVehicle != 0) game.setEntityHeading(this.previewVehicle, game.getEntityHeading(this.previewVehicle) + rotation);
     }
     
     LeaveCarShop() {

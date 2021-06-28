@@ -27,6 +27,7 @@ import './views/Inventory';
 import './views/Carshop';
 import './views/Shop';
 import './views/Confirmation';
+import './views/InputBox';
 import './views/ClothShop';
 import './views/Death';
 import './views/Phone';
