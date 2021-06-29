@@ -20,7 +20,7 @@ class Voice {
             this.send({ method: "joinChannel", data: {
                 channel: "Ingame",
                 password: "1337",
-                username: "Nova1"
+                username: alt.Player.local.name
             }});
         });
 
@@ -49,7 +49,7 @@ class Voice {
             this.send({ method: "joinChannel", data: {
                 channel: "Ingame",
                 password: "1337",
-                username: "Nova1"
+                username: alt.Player.local.name
             }});
         }
     }
