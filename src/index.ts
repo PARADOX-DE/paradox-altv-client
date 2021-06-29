@@ -31,6 +31,7 @@ import './views/InputBox';
 import './views/ClothShop';
 import './views/Death';
 import './views/Phone';
+import './views/GasStation';
 
 import './views/hud/chat';
 import './views/hud/weaponinfo';
