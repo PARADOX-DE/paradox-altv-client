@@ -26,6 +26,8 @@ export class InventoryView extends Window {
             const chatView = Window.getWindow("Chat");
             if(chatView != undefined && (chatView as ChatView).open == true) return;
 
+            if(PlayerControlsController.cursor) return;
+
             EventController.emitServer("Pressed_I");
         }
     }
