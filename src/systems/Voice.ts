@@ -76,8 +76,8 @@ class Voice {
         ];
 
         try {
-            //for(const target of alt.Player.all) {
-            for(const target of fakePlayer) {
+            for(const target of alt.Player.all) {
+            //for(const target of fakePlayer) {
                 if(target.scriptID == 0 || target.id == localPlayer.id) continue;
     
                 const targetPos = target.pos;
