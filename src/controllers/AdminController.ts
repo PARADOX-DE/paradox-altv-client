@@ -179,6 +179,10 @@ class AdminController extends Controller {
             hitEntity
         }
     }
+
+    stringifyVector(vec: alt.IVector3) {
+        return { x: vec.x.toFixed(2), y: vec.y.toFixed(2), z: vec.z.toFixed(2) }
+    }
     
     onTick() {
         if(!this.aduty) return;
@@ -226,8 +230,10 @@ class AdminController extends Controller {
         if(alt.debug) {
             const localPlayer = alt.Player.local;
             const data = {
-                pos: { x: localPlayer.pos.x.toFixed(2), y: localPlayer.pos.y.toFixed(2), z: localPlayer.pos.z.toFixed(2) },
+                pos: this.stringifyVector(localPlayer.pos),
                 rot: game.getEntityHeading(localPlayer.scriptID).toFixed(2),
+                aimPos: this.stringifyVector(localPlayer.aimPos),
+                headRot: this.stringifyVector(localPlayer.headRot),
                 lastPressedKey: `${this.lastPressedKey} - ${String.fromCharCode(this.lastPressedKey)}`,
                 objectCreatedEnabled: ObjectCreator.enabled ? "On" : "Off",
                 objectCreatorIndex: ObjectCreator.currentObjectIndex,
@@ -251,9 +257,7 @@ class AdminController extends Controller {
             const raycast = this.getRaycast();
             if(raycast.isHit) {
                 const headPosition = game.getWorldPositionOfEntityBone(localPlayer.scriptID, game.getPedBoneIndex(localPlayer.scriptID, 12844));
-                if(headPosition) {
-                    game.drawLine(headPosition.x, headPosition.y, headPosition.z, raycast.pos.x, raycast.pos.y, raycast.pos.z, 255, 0, 0, 255);
-                }
+                if(headPosition) game.drawLine(headPosition.x, headPosition.y, headPosition.z, raycast.pos.x, raycast.pos.y, raycast.pos.z, 255, 0, 0, 255);
             }
         }
 

@@ -6,6 +6,7 @@ import Window from '../../classes/Window';
 
 import EventController from '../../controllers/EventController';
 import PlayerControlsController from '../../controllers/PlayerControlsController';
+import util from '../../util';
 
 export class XMenuView extends Window {
     targetMarker?: Marker;
@@ -44,12 +45,14 @@ export class XMenuView extends Window {
 
     openXMenu() {
         const localPlayer = alt.Player.local;
-        const raycast = this.getRaycast();
+        const raycast = util.getRaycast();
         let items: any[] = [];
         
-        if(raycast[4]) {
-            this.targetId = raycast[4];
-            if(this.targetId == undefined || this.targetId == 11010) return;
+        if(raycast.isHit) {
+            const targetEntity = util.getNearestEntity(raycast.pos, 3);
+            if(targetEntity == null) return;
+            
+            this.targetId = targetEntity.scriptID;
 
             if(localPlayer.vehicle != null) { // current vehicle (inside)
                 items = [{
@@ -92,7 +95,7 @@ export class XMenuView extends Window {
                     desc: "",
                     icon: 'exit'
 				}];
-            } else if(game.isEntityAVehicle(raycast[4])) { // vehicle at raycast (outside)
+            } else if(game.isEntityAVehicle(targetEntity)) { // vehicle at raycast (outside)
                 items = [{
 					title: 'Schließen',
                     desc: "Schließe das Menü",
@@ -123,12 +126,12 @@ export class XMenuView extends Window {
                     event: 'StartVehicleEngine'
 				}];
 
-                game.setVehicleLights(raycast[4], 2);
-                alt.setTimeout(() => game.setVehicleLights(raycast[4], 1), 300);
+                game.setVehicleLights(targetEntity.scriptID, 2);
+                alt.setTimeout(() => game.setVehicleLights(targetEntity.scriptID, 1), 300);
             } else { // nothing or player
-                if(!game.doesEntityExist(raycast[4]) || raycast[4] == alt.Player.local.scriptID) return;
+                if(!game.doesEntityExist(targetEntity.scriptID) || targetEntity.scriptID == alt.Player.local.scriptID) return;
 
-                this.targetMarker = new Marker(27, game.getEntityCoords(raycast[4], false), 1.0, true, new alt.RGBA(255, 255, 255, 255), raycast[4]);
+                this.targetMarker = new Marker(27, game.getEntityCoords(targetEntity.scriptID, false), 1.0, true, new alt.RGBA(255, 255, 255, 255), targetEntity.scriptID);
                 items = [{
 					title: 'UR',
                     desc: "",
@@ -189,8 +192,11 @@ export class XMenuView extends Window {
         this.emit("Close");
     }
 
-    onInteract(event: string) {
-        if(this.targetId && event) EventController.emitServer(event, alt.Entity.getByScriptID(this.targetId));
+    onInteract(itemTitle: string, event: string) {
+        if(this.targetId) {
+            if(event) EventController.emitServer(event, alt.Entity.getByScriptID(this.targetId));
+            else this.onItemInteract(itemTitle);
+        }
     }
     
     onKey(key: number, down: boolean) {
@@ -198,6 +204,10 @@ export class XMenuView extends Window {
 
         if(down) this.openXMenu();
         else this.closeXMenu();
+    }
+    
+    onItemInteract(title: string) {
+        
     }
 }
 
