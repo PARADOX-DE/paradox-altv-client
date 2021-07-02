@@ -88,3 +88,9 @@ EventController.onServer("SetPedIntoVeh", (vehicle: alt.Vehicle, seat: number) =
         if(ticks > 50000) return alt.clearInterval(interval);
     }, 10);
 });
+
+declare module "alt-client" {
+    export interface Entity {
+        radioAudio?: Audio;
+    }
+}

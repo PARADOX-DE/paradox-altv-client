@@ -13,19 +13,15 @@ class VehicleRadio {
         if(!(entity instanceof alt.Vehicle)) return;
         await util.isEntitySpawned(entity);
 
-        if(entity.hasStreamSyncedMeta("HasRadio") && entity.getStreamSyncedMeta("HasRadio") == true) {
-            if(entity.hasMeta("RadioClass")) entity.deleteMeta("RadioClass");
-            
-            this.startRadio(entity);
-        }
+        if(entity.hasStreamSyncedMeta("HasRadio") && entity.getStreamSyncedMeta("HasRadio") == true) this.startRadio(entity);
     }
 
     onGameEntityDestroy(entity: alt.Entity) {
         if(!(entity instanceof alt.Vehicle)) return;
-        if(entity.hasStreamSyncedMeta("HasRadio") && entity.getStreamSyncedMeta("HasRadio") == true && entity.hasMeta("RadioClass")) {
-            if(entity.getMeta("RadioClass") == null || entity.getMeta("RadioClass") == undefined) return;
+        if(entity.hasStreamSyncedMeta("HasRadio") && entity.getStreamSyncedMeta("HasRadio") == true && entity.radioAudio) {
+            if(entity.radioAudio) return;
 
-            const radioClass: alt.Audio = entity.getMeta("RadioClass");
+            const radioClass: alt.Audio = entity.radioAudio;
             radioClass.destroy();
         }
     }
@@ -41,21 +37,18 @@ class VehicleRadio {
     }
 
     startRadio(vehicle: alt.Vehicle) {
-        if(vehicle.hasMeta("RadioClass")) return;
+        if(vehicle.radioAudio) return;
 
-        const radioClass = new alt.Audio("https://stream.retrosounds.co/paradoxrp.ogg", 0.5, "radio", false);
-        radioClass.addOutput(vehicle);
-        radioClass.play();
-
-        vehicle.setMeta("RadioClass", radioClass);
+        vehicle.radioAudio = new alt.Audio("https://stream.retrosounds.co/paradoxrp.ogg", 0.5, "radio", false);
+        vehicle.radioAudio.addOutput(vehicle);
+        vehicle.radioAudio.play();
     }
 
     stopRadio(vehicle: alt.Vehicle) {
-        if(!vehicle.hasMeta("RadioClass")) return;
-        const radioClass: alt.Audio = vehicle.getMeta("RadioClass");
+        if(!vehicle.radioAudio) return;
 
-        radioClass.destroy();
-        vehicle.deleteMeta("RadioClass");
+        vehicle.radioAudio.destroy();
+        vehicle.radioAudio = undefined;
     }
 }
 
