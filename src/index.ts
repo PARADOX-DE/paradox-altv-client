@@ -63,9 +63,15 @@ alt.on("connectionComplete", () => {
 
 alt.everyTick(() => {
     if(game.isPedArmed(alt.Player.local.scriptID, 6)) {
+        game.disableControlAction(0, 140, true);
         game.disableControlAction(0, 141, true);
         game.disableControlAction(0, 142, true);
     }
+
+    game.setPedConfigFlag(alt.Player.local.scriptID, 35, false);
+    game.setPedConfigFlag(alt.Player.local.scriptID, 241, true);
+    game.setPedConfigFlag(alt.Player.local.scriptID, 429, true);
+    game.setPedConfigFlag(alt.Player.local.scriptID, 184, true);
 });
 
 alt.on("keydown", key => {

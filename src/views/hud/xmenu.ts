@@ -43,16 +43,16 @@ export class XMenuView extends Window {
                 icon: 'vehicle/exit',
             },
             {
-                title: 'Motorhaube öffnen/schließen',
-                desc: "Öffne/Schließe die Motorhaube des Fahrzeuges",
-                icon: 'vehicle/hood',
-                event: 'OpenVehicleHood'
-            },
-            {
                 title: 'Auf/Zuschließen',
                 desc: "Öffne/Schließe das Fahrzeug",
                 icon: 'vehicle/key',
                 event: 'LockVehicle'
+            },
+            {
+                title: 'Motorhaube öffnen/schließen',
+                desc: "Öffne/Schließe die Motorhaube des Fahrzeuges",
+                icon: 'vehicle/hood',
+                event: 'OpenVehicleHood'
             },
             {
                 title: 'Starten/Stoppen',
@@ -74,10 +74,10 @@ export class XMenuView extends Window {
                 icon: 'vehicle/exit',
             },
             {
-                title: 'Kofferraum öffnen/schließen',
-                desc: "Öffne/Schließe den Kofferraum des Fahrzeuges",
-                icon: 'vehicle/trunk',
-                event: 'OpenVehicleTrunk'
+                title: 'Auf/Zuschließen',
+                desc: "Öffne/Schließe das Fahrzeug",
+                icon: 'vehicle/key',
+                event: 'LockVehicle'
             },
             {
                 title: 'Motorhaube öffnen/schließen',
@@ -86,10 +86,10 @@ export class XMenuView extends Window {
                 event: 'OpenVehicleHood'
             },
             {
-                title: 'Auf/Zuschließen',
-                desc: "Öffne/Schließe das Fahrzeug",
-                icon: 'vehicle/key',
-                event: 'LockVehicle'
+                title: 'Kofferraum öffnen/schließen',
+                desc: "Öffne/Schließe den Kofferraum des Fahrzeuges",
+                icon: 'vehicle/trunk',
+                event: 'OpenVehicleTrunk'
             }];
 
             game.setVehicleLights(targetEntity.scriptID, 2);
