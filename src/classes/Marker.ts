@@ -5,14 +5,14 @@ const markers: Marker[] = [];
 const streamingRange = 250;
 
 class Marker {
-    id: number;
+    readonly id: number;
     type: number;
     position: alt.IVector3;
     scale: number;
     visible: boolean;
     color: alt.RGBA;
 
-    tickId: number;
+    private readonly tickId: number;
     entityId?: number;
 
     constructor(type: number, position: alt.IVector3, scale: number, visible = true, color = new alt.RGBA(255, 255, 255, 255), entityId?: number) {
