@@ -46,6 +46,7 @@ import './systems/Voice';
 import './systems/Flatbed';
 import './systems/CryptoRoom';
 import './systems/ObjectCreator';
+import './systems/VehicleRadio';
 
 alt.on("connectionComplete", () => {
     alt.setStat(alt.StatName.Stamina, 100);
@@ -58,21 +59,6 @@ alt.on("connectionComplete", () => {
 
     game.replaceHudColourWithRgba(143, 36, 177, 221, 255);
     alt.log("[PARADOX ENCRYPTION] Loaded main file with AES-128");
-});
-
-let audio: alt.Audio | null = null;
-
-alt.on("enteredVehicle", (vehicle, seat) => {
-    if(audio == null) {
-        audio = new alt.Audio("https://stream.retrosounds.co/paradoxrp.ogg", 1, "radio", false);
-        audio.addOutput(vehicle);
-        audio.play();
-    } else {
-        audio.reset();
-
-        audio.addOutput(vehicle);
-        audio.play();
-    }
 });
 
 alt.everyTick(() => {

@@ -65,6 +65,23 @@ export default {
             });
         });
     },
+    isEntitySpawned(target: alt.Entity): Promise<boolean> {
+        return new Promise(resolve => {
+            let ticks = 0;
+            if(target.scriptID != 0) return resolve(true);
+
+            let interval = alt.everyTick(() => {
+                if(ticks > 10000) return resolve(false);
+                if(target.scriptID == 0) {
+                    ticks++;
+                    return;
+                }
+
+                alt.clearEveryTick(interval);
+                resolve(true);
+            });
+        });
+    },
     GetDirectionFromRotation(rotation: alt.IVector3) {
         var z = rotation.z * (Math.PI / 180.0);
         var x = rotation.x * (Math.PI / 180.0);
