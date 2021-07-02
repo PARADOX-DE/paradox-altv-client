@@ -62,6 +62,8 @@ alt.on("connectionComplete", () => {
 });
 
 alt.everyTick(() => {
+    game.disableControlAction(0, 85, true);
+
     if(game.isPedArmed(alt.Player.local.scriptID, 6)) {
         game.disableControlAction(0, 140, true);
         game.disableControlAction(0, 141, true);
