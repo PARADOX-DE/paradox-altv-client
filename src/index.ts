@@ -45,6 +45,8 @@ import './systems/VehiclePush';
 import './systems/Voice';
 import './systems/Flatbed';
 import './systems/CryptoRoom';
+import './systems/ObjectCreator';
+import './systems/VehicleRadio';
 
 alt.on("connectionComplete", () => {
     alt.setStat(alt.StatName.Stamina, 100);
@@ -255,6 +257,11 @@ alt.everyTick(() => {
         game.disableControlAction(alt.Player.local.scriptID, 141, true) // INPUT_MELEE_ATTACK_HEAVY
         game.disableControlAction(alt.Player.local.scriptID, 142, true) // INPUT_MELEE_ATTACK_ALTERNATE
     }
+
+    game.setPedConfigFlag(alt.Player.local.scriptID, 35, false);
+    game.setPedConfigFlag(alt.Player.local.scriptID, 241, true);
+    game.setPedConfigFlag(alt.Player.local.scriptID, 429, true);
+    game.setPedConfigFlag(alt.Player.local.scriptID, 184, true);
 });
 
 alt.on("keydown", key => {
@@ -277,3 +284,9 @@ EventController.onServer("SetPedIntoVeh", (vehicle: alt.Vehicle, seat: number) =
         if(ticks > 50000) return alt.clearInterval(interval);
     }, 10);
 });
+
+declare module "alt-client" {
+    export interface Entity {
+        radioAudio?: Audio;
+    }
+}

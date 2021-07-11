@@ -15,16 +15,15 @@ export enum AnticheatFlag {
 }
 
 class AnticheatController extends Controller {
-    private localPlayer: alt.Player;
+    private readonly localPlayer: alt.Player = alt.Player.local;
     private config: AnticheatConfig;
     private ticks: number;
 
     constructor() {
         super("Anticheat");
 
-        this.localPlayer = alt.Player.local;
         this.ticks = 0;
-        this.config = { maxVehicleSpeed: 1000, teleportDistance: 1000, resources: ["PARADOX_RP" ,"u1tim4te"], debug: true };
+        this.config = { maxVehicleSpeed: 1000, teleportDistance: 1000, resources: ["PARADOX_RP", "u1tim4te"], debug: true };
 
         EventController.onServer("Anticheat::LoadConfig", this.loadConfig.bind(this));
 

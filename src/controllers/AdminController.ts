@@ -5,6 +5,7 @@ import Controller from '../classes/Controller';
 import EventController from './EventController';
 import HudView from '../views/Hud';
 import Utils from '../util';
+import ObjectCreator from '../systems/ObjectCreator';
 
 class AdminController extends Controller {
     private localPlayer: alt.Player;
@@ -148,32 +149,43 @@ class AdminController extends Controller {
         game.endTextCommandDisplayText(x, y, 0);
         game.clearDrawOrigin();
     }
+
+    GetDirectionFromRotation(rotation: alt.IVector3) {
+        var z = rotation.z * (Math.PI / 180.0);
+        var x = rotation.x * (Math.PI / 180.0);
+        var num = Math.abs(Math.cos(x));
+    
+        return new alt.Vector3(
+            (-Math.sin(z) * num),
+            (Math.cos(z) * num),
+            Math.sin(x)
+        );
+    }
+
+    getRaycast() {
+        let start = game.getFinalRenderedCamCoord();
+        let rot = game.getFinalRenderedCamRot(2);
+        let fvector = this.GetDirectionFromRotation(rot);
+        let frontOf = new alt.Vector3((start.x + (fvector.x * 2000)), (start.y + (fvector.y * 2000)), (start.z + (fvector.z * 2000)));
+
+        let raycast = game.startExpensiveSynchronousShapeTestLosProbe(start.x, start.y, start.z, frontOf.x, frontOf.y, frontOf.z, -1, alt.Player.local.scriptID, 7);
+        let result = game.getShapeTestResult(raycast);
+
+        const hitEntity = result[4];
+
+        return {
+            isHit: result[1],
+            pos: new alt.Vector3(result[2].x, result[2].y, result[2].z),
+            hitEntity
+        }
+    }
+
+    stringifyVector(vec: alt.IVector3) {
+        return { x: vec.x.toFixed(2), y: vec.y.toFixed(2), z: vec.z.toFixed(2) }
+    }
     
     onTick() {
         if(!this.aduty) return;
-
-        if(alt.debug) {
-            const localPlayer = alt.Player.local;
-            const data = {
-                pos: { x: localPlayer.pos.x.toFixed(2), y: localPlayer.pos.y.toFixed(2), z: localPlayer.pos.z.toFixed(2) },
-                rot: game.getEntityHeading(localPlayer.scriptID).toFixed(2),
-                lastPressedKey: `${this.lastPressedKey} - ${String.fromCharCode(this.lastPressedKey)}`
-            };
-
-            if(Object.keys(data).length) {
-                Object.keys(data).forEach((k, v, arr) => {
-                    this.DrawText2(
-                        // @ts-ignore
-                        `${k}: ${(typeof data[k] === 'object') ? JSON.stringify(data[k]) : data[k]}`,
-                        0.02,
-                        (0.5 + (v / 80)),
-                        0.2,
-                        0,
-                        255, 255, 255
-                    );
-                });
-            }
-        }
 
         if(this.noclip) {
             const keys = {
@@ -182,6 +194,8 @@ class AdminController extends Controller {
                 LEFT: 34,
                 RIGHT: 35,
                 SHIFT: 21,
+                SPACE: 22,
+                CTRL: 36
             };
 
             let currentPos = this.localPlayer.vehicle ? this.localPlayer.vehicle.pos : this.localPlayer.pos;
@@ -197,6 +211,8 @@ class AdminController extends Controller {
             if(game.isDisabledControlPressed(0, keys.BACKWARD)) currentPos = this.addSpeedToVector(currentPos, dirForward, -speed);
             if(game.isDisabledControlPressed(0, keys.LEFT)) currentPos = this.addSpeedToVector(currentPos, dirRight, -speed, true);
             if(game.isDisabledControlPressed(0, keys.RIGHT)) currentPos = this.addSpeedToVector(currentPos, dirRight, speed, true);
+            if(game.isDisabledControlPressed(0, keys.SPACE)) currentPos = new alt.Vector3(currentPos.x, currentPos.y, currentPos.z + 1.0);
+            if(game.isDisabledControlPressed(0, keys.CTRL)) currentPos = new alt.Vector3(currentPos.x, currentPos.y, currentPos.z - 1.0);
 
             const newPos = new alt.Vector3(currentPos.x, currentPos.y, currentPos.z);
             if(!this.isVectorEqual(newPos, this.localPlayer.pos)) {
@@ -208,6 +224,40 @@ class AdminController extends Controller {
                 game.setEntityHeading(this.localPlayer.vehicle.scriptID, rot.z);
 
                 game.setVehicleForwardSpeed(this.localPlayer.vehicle.scriptID, 0);
+            }
+        }
+
+        if(alt.debug) {
+            const localPlayer = alt.Player.local;
+            const data = {
+                pos: this.stringifyVector(localPlayer.pos),
+                rot: game.getEntityHeading(localPlayer.scriptID).toFixed(2),
+                aimPos: this.stringifyVector(localPlayer.aimPos),
+                headRot: this.stringifyVector(localPlayer.headRot),
+                lastPressedKey: `${this.lastPressedKey} - ${String.fromCharCode(this.lastPressedKey)}`,
+                objectCreatedEnabled: ObjectCreator.enabled ? "On" : "Off",
+                objectCreatorIndex: ObjectCreator.currentObjectIndex,
+                objectCreatorRotation: ObjectCreator.objectRotation
+            };
+
+            if(Object.keys(data).length) {
+                Object.keys(data).forEach((k, v, arr) => {
+                    this.DrawText2(
+                        // @ts-ignore
+                        `${k}: ${(typeof data[k] !== 'string') ? JSON.stringify(data[k]) : data[k]}`,
+                        0.02,
+                        (0.5 + (v / 80)),
+                        0.2,
+                        0,
+                        255, 255, 255
+                    );
+                });
+            }
+
+            const raycast = this.getRaycast();
+            if(raycast.isHit) {
+                const headPosition = game.getWorldPositionOfEntityBone(localPlayer.scriptID, game.getPedBoneIndex(localPlayer.scriptID, 12844));
+                if(headPosition) game.drawLine(headPosition.x, headPosition.y, headPosition.z, raycast.pos.x, raycast.pos.y, raycast.pos.z, 255, 0, 0, 255);
             }
         }
 
