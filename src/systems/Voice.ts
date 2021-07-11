@@ -6,11 +6,11 @@ function logDebug(...args: any[]) {
 }
 
 class Voice {
-    webSocket: alt.WebSocketClient;
-    everyTick: number;
+//    webSocket: alt.WebSocketClient;
+//    everyTick: number;
 
     constructor() {
-        this.everyTick = 0;
+        /*this.everyTick = 0;
 
         this.webSocket = new alt.WebSocketClient("ws://localhost:3005");
         this.webSocket.on("open", () => {
@@ -37,7 +37,7 @@ class Voice {
         this.webSocket.on("message", this.onMessage.bind(this));
 
         this.webSocket.autoReconnect = true;
-        this.webSocket.start();
+        this.webSocket.start();*/
     }
 
     onMessage(msg: string) {
@@ -102,8 +102,8 @@ class Voice {
     }
 
     send(data: any) {
-        if(typeof data == "string") this.webSocket.send(data);
-        else this.webSocket.send(JSON.stringify(data));
+        //if(typeof data == "string") this.webSocket.send(data);
+        //else this.webSocket.send(JSON.stringify(data));
     }
 }
 

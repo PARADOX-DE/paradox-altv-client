@@ -8,9 +8,9 @@ class WebView {
     public webView: alt.WebView;
 
     constructor() {
-        //http://resource/ui/index.html
+        //http://assets/UI/html/index.html
         //http://localhost:8080/
-        this.webView = new alt.WebView("http://resource/ui/index.html");
+        this.webView = new alt.WebView("http://assets/UI/html/index.html");
         this.webView.on("load", () => {
             this.webView.focus();
             EventController.emitServer("PlayerReady");
